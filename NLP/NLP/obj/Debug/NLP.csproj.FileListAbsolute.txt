@@ -1,0 +1,6 @@
+b:\documents\visual studio 2013\Projects\NLP\NLP\bin\Debug\NLP.exe.config
+b:\documents\visual studio 2013\Projects\NLP\NLP\bin\Debug\NLP.exe
+b:\documents\visual studio 2013\Projects\NLP\NLP\bin\Debug\NLP.pdb
+b:\documents\visual studio 2013\Projects\NLP\NLP\obj\Debug\NLP.csprojResolveAssemblyReference.cache
+b:\documents\visual studio 2013\Projects\NLP\NLP\obj\Debug\NLP.exe
+b:\documents\visual studio 2013\Projects\NLP\NLP\obj\Debug\NLP.pdb
