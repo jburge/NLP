@@ -13,7 +13,12 @@ namespace NLP
         {
             Model2 myModel = new Model2(3);
             myModel.ReadInputCorpus("Input.txt");
-            myModel.DisplayModel();
+            //myModel.DisplayModel();
+            List<Tuple<double, string>> test = myModel.BigramProbability("lorem");
+            foreach (Tuple<double, string> t in test)
+            {
+                Console.WriteLine(t.Item2 + ": " + t.Item1);
+            }
         }
     }
 }

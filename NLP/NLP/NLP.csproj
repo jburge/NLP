@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="Model2.cs" />
     <Compile Include="Gram.cs" />
-    <Compile Include="Model.cs" />
+    <Compile Include="ModelOLD.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

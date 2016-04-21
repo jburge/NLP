@@ -4,3 +4,9 @@ b:\documents\visual studio 2013\Projects\NLP\NLP\bin\Debug\NLP.pdb
 b:\documents\visual studio 2013\Projects\NLP\NLP\obj\Debug\NLP.csprojResolveAssemblyReference.cache
 b:\documents\visual studio 2013\Projects\NLP\NLP\obj\Debug\NLP.exe
 b:\documents\visual studio 2013\Projects\NLP\NLP\obj\Debug\NLP.pdb
+B:\Documents\GitHub\NLP\NLP\NLP\bin\Debug\NLP.exe.config
+B:\Documents\GitHub\NLP\NLP\NLP\obj\Debug\NLP.exe
+B:\Documents\GitHub\NLP\NLP\NLP\obj\Debug\NLP.pdb
+B:\Documents\GitHub\NLP\NLP\NLP\obj\Debug\NLP.csprojResolveAssemblyReference.cache
+B:\Documents\GitHub\NLP\NLP\NLP\bin\Debug\NLP.exe
+B:\Documents\GitHub\NLP\NLP\NLP\bin\Debug\NLP.pdb
