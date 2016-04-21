@@ -10,3 +10,9 @@ B:\Documents\GitHub\NLP\NLP\NLP\obj\Debug\NLP.pdb
 B:\Documents\GitHub\NLP\NLP\NLP\obj\Debug\NLP.csprojResolveAssemblyReference.cache
 B:\Documents\GitHub\NLP\NLP\NLP\bin\Debug\NLP.exe
 B:\Documents\GitHub\NLP\NLP\NLP\bin\Debug\NLP.pdb
+Z:\CS457\NLP\NLP\NLP\bin\Debug\NLP.exe.config
+Z:\CS457\NLP\NLP\NLP\obj\Debug\NLP.csprojResolveAssemblyReference.cache
+Z:\CS457\NLP\NLP\NLP\bin\Debug\NLP.exe
+Z:\CS457\NLP\NLP\NLP\bin\Debug\NLP.pdb
+Z:\CS457\NLP\NLP\NLP\obj\Debug\NLP.exe
+Z:\CS457\NLP\NLP\NLP\obj\Debug\NLP.pdb
