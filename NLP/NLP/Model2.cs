@@ -121,6 +121,10 @@ namespace NLP
                 }
             }
         }
+        public List<Tuple<double, string>> EvaluateState(Queue<string> predicate, string currentWord)
+        {
+            return Analysis.Evaluate(NGramProbability(getGramFromChain(predicate)), currentWord);
+        }
         private List<Tuple<double,string>> NGramProbability(Gram predicate)
         {
             List<Tuple<double, string>> distribution = new List<Tuple<double, string>>();

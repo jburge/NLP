@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis.cs" />
     <Compile Include="EditDistance.cs" />
     <Compile Include="Model2.cs" />
     <Compile Include="Gram.cs" />

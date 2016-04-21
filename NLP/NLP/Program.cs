@@ -12,16 +12,19 @@ namespace NLP
         static void Main(string[] args)
         {
             TestEdit();
+            RunModel();
         }
-        public void RunModel()
+        public static void RunModel()
         {
             Model2 myModel = new Model2(3);
             myModel.ReadInputCorpus("Input.txt");
             //myModel.DisplayModel();
-            string tt = "lorem";
+            string tt = "sit";
+            string ty = "amet";
             Queue<string> temp = new Queue<string>();
             temp.Enqueue(tt);
-            List<Tuple<double, string>> test = myModel.Evaluate(temp);
+            temp.Enqueue(ty);
+            List<Tuple<double, string>> test = myModel.EvaluateState(temp, "lectum");
             foreach (Tuple<double, string> t in test)
             {
                 Console.WriteLine(t.Item2 + ": " + t.Item1);
@@ -32,7 +35,7 @@ namespace NLP
             string w1 = "sunday";
             string w2 = "saturday";
 
-            int d = EditDistance.ComputeEditDistanceDP(w1, w2, w1.Length, w2.Length);
+            int d = EditDistance.ComputeEditDistanceDP(w1, w2);
             Console.WriteLine(w1 + " , " + w2 + " : " + d);
         }
     }
