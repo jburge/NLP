@@ -41,6 +41,18 @@ namespace NLP
         {
             return new List<Gram>(children.Values.ToList().OrderBy(o => o.getWord()).ToList()); 
         }
+        public Gram getGram(Queue<string> chain)
+        {
+            chain.Dequeue();
+            if (chain.Count > 0)
+            {
+                return children[chain.First()].getGram(chain);
+            }
+            else
+            {
+                return this;
+            }
+        }
         public void DisplayModel()
         {
             //Console.WriteLine(count);

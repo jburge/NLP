@@ -121,18 +121,25 @@ namespace NLP
                 }
             }
         }
-        public List<Tuple<double,string>> BigramProbability(string predicate)
+        private List<Tuple<double,string>> NGramProbability(Gram predicate)
         {
             List<Tuple<double, string>> distribution = new List<Tuple<double, string>>();
-            double predicateInstances = model[predicate].getCount();
-            List<Gram> predicateChildren = model[predicate].getChildren();
+            double predicateInstances = predicate.getCount();
+            List<Gram> predicateChildren = predicate.getChildren();
             foreach (Gram g in predicateChildren)
             {
                 distribution.Add(new Tuple<double, string>( g.getCount()/ predicateInstances, g.getWord()));
             }
             distribution.Sort();
-
             return distribution;
+        }
+        private Gram getGramFromChain(Queue<string> chain)
+        {
+            return model[chain.First()].getGram(chain);
+        }
+        public List<Tuple<double, string>> Evaluate(Queue<string> chain)
+        {
+            return NGramProbability(getGramFromChain(chain));
         }
     }
 }
