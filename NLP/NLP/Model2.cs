@@ -145,5 +145,6 @@ namespace NLP
         {
             return NGramProbability(getGramFromChain(chain));
         }
+        public int getModelDepth() { return modelDepth; }
     }
 }

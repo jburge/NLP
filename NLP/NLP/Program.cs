@@ -12,9 +12,10 @@ namespace NLP
         static void Main(string[] args)
         {
             TestEdit();
-            RunModel();
+            Model2 model = RunModel();
+            DynamicReader.InputLoop(model);
         }
-        public static void RunModel()
+        public static Model2 RunModel()
         {
             Model2 myModel = new Model2(3);
             myModel.ReadInputCorpus("Input.txt");
@@ -29,6 +30,7 @@ namespace NLP
             {
                 Console.WriteLine(t.Item2 + ": " + t.Item1);
             }
+            return myModel;
         }
         public static void TestEdit()
         {
