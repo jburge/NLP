@@ -9,32 +9,40 @@ namespace NLP
     public static class DynamicReader
     {
  
-        public static void InputLoop(Model2 model)
+        public static void InputLoop(Model model)
         {
+            Writer.SetCursor(0, 1);
             Queue<string> chain = new Queue<string>();
             string word = "";
             while (true)
             {
-                char key = Console.ReadKey().KeyChar;
-                if (key == ' ')
+                ConsoleKeyInfo info = Console.ReadKey(); 
+                if (info.Key == ConsoleKey.Spacebar)
                 {
-                    Console.Write(word + " ");
+                    Console.Write(" ");
+                    if (!model.HasKey(word))
+                    {
+                        model.AddWord(word);
+                    }
                     if (chain.Count == model.getModelDepth())
                         chain.Dequeue();
                     if (chain.Count > 0)
                     {
-                        List<Tuple<double, string>> test = model.EvaluateState(chain, word);
-                        foreach (Tuple<double, string> t in test)
-                        {
-                            Console.WriteLine(t.Item2 + ": " + t.Item1);
-                        }
+                        model.DynamicRead(chain, word);
+                        
                     }
                     chain.Enqueue(word);
                     word = "";
                 }
+                else if(info.Key == ConsoleKey.Escape)
+                {
+                    break;
+                }
+                else if (info.Key == ConsoleKey.Enter)
+                { }
                 else
                 {
-                    word += key;
+                   word += info.KeyChar;
                 }
             }
         }

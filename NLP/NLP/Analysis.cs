@@ -36,7 +36,7 @@ namespace NLP
         }
         private static double ComputeValue(int ed, double prob)
         {
-            return (1 / (double)ed * prob);
+            return ((1 / (double)(ed + 1)) * prob);
         }
 
     

@@ -11,25 +11,14 @@ namespace NLP
     {
         static void Main(string[] args)
         {
-            TestEdit();
-            Model2 model = RunModel();
+            //TestEdit();
+            Model model = RunModel();
             DynamicReader.InputLoop(model);
         }
-        public static Model2 RunModel()
+        public static Model RunModel()
         {
-            Model2 myModel = new Model2(3);
+            Model myModel = new Model(3);
             myModel.ReadInputCorpus("Input.txt");
-            //myModel.DisplayModel();
-            string tt = "sit";
-            string ty = "amet";
-            Queue<string> temp = new Queue<string>();
-            temp.Enqueue(tt);
-            temp.Enqueue(ty);
-            List<Tuple<double, string>> test = myModel.EvaluateState(temp, "lectum");
-            foreach (Tuple<double, string> t in test)
-            {
-                Console.WriteLine(t.Item2 + ": " + t.Item1);
-            }
             return myModel;
         }
         public static void TestEdit()
