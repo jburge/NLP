@@ -11,14 +11,13 @@ namespace NLP
     {
         static void Main(string[] args)
         {
-            //TestEdit();
             Model model = RunModel();
             DynamicReader.InputLoop(model);
         }
         public static Model RunModel()
         {
             Model myModel = new Model(3);
-            myModel.ReadInputCorpus("Input.txt");
+            myModel.ReadInputCorpus("PrideAndPrejudice.txt");
             return myModel;
         }
         public static void TestEdit()

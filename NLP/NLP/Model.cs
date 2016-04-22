@@ -12,7 +12,7 @@ namespace NLP
     {
         int modelDepth;
         Dictionary<string, Gram> model = new Dictionary<string, Gram>();
-        static string punctuation = "[\";,]";
+        static string punctuation = "[\";,-_*]";
         static string terminators = "[.!?]";
         public Model(int depth) { modelDepth = depth; }
         public void AddWord(string word)
@@ -143,13 +143,14 @@ namespace NLP
         {
             List<Tuple<double, string>> distribution = new List<Tuple<double, string>>();
             double predicateInstances = predicate.getCount();
+            predicateInstances += model.Keys.Count;
             //List<Gram> predicateChildren = predicate.getChildren();
             foreach (string s in model.Keys)
             {
                 int freqCount = 1;
                 if(predicate.children.ContainsKey(s))
                 {
-                    freqCount = predicate.children[s].getCount();
+                    freqCount += predicate.children[s].getCount();
                 }
                 distribution.Add(new Tuple<double, string>( freqCount/ predicateInstances, s));
             }
