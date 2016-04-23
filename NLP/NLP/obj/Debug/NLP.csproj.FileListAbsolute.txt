@@ -16,3 +16,9 @@ Z:\CS457\NLP\NLP\NLP\bin\Debug\NLP.exe
 Z:\CS457\NLP\NLP\NLP\bin\Debug\NLP.pdb
 Z:\CS457\NLP\NLP\NLP\obj\Debug\NLP.exe
 Z:\CS457\NLP\NLP\NLP\obj\Debug\NLP.pdb
+\\cs1\cs_students\jburge16\CS457\NLP\NLP\NLP\bin\Debug\NLP.exe.config
+\\cs1\cs_students\jburge16\CS457\NLP\NLP\NLP\bin\Debug\NLP.exe
+\\cs1\cs_students\jburge16\CS457\NLP\NLP\NLP\bin\Debug\NLP.pdb
+\\cs1\cs_students\jburge16\CS457\NLP\NLP\NLP\obj\Debug\NLP.exe
+\\cs1\cs_students\jburge16\CS457\NLP\NLP\NLP\obj\Debug\NLP.pdb
+\\cs1\cs_students\jburge16\CS457\NLP\NLP\NLP\obj\Debug\NLP.csprojResolveAssemblyReference.cache

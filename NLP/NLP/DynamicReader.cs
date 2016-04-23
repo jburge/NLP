@@ -14,12 +14,14 @@ namespace NLP
             Writer.SetCursor(0, 1);
             Queue<string> chain = new Queue<string>();
             string word = "";
+            Tuple<int, int> lastLoc = new Tuple<int, int>(0,0);
+            Tuple<int, int> currLoc = new Tuple<int, int>(0,0);
             while (true)
             {
                 ConsoleKeyInfo info = Console.ReadKey(); 
                 if (info.Key == ConsoleKey.Spacebar)
                 {
-                    Console.Write(" ");
+                    //Console.Write(" ");
                     if (!model.HasKey(word))
                     {
                         model.AddWord(word);
@@ -33,14 +35,28 @@ namespace NLP
                     }
                     chain.Enqueue(word);
                     word = "";
+                    lastLoc = currLoc;
+                    currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
                 }
                 else if(info.Key == ConsoleKey.Escape)
                 {
                     break;
                 }
-                else if (info.Key == ConsoleKey.Enter)
+                else if (Char.IsNumber(info.KeyChar))
+                {
+                    Writer.ReWriteWord(Convert.ToInt32(info.KeyChar.ToString()), lastLoc);
+                    currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
+
+                }
+                else if (info.Key == ConsoleKey.Enter || info.Key == ConsoleKey.Tab)
                 { }
-                else
+                else if (info.Key == ConsoleKey.Backspace)
+                {
+                    if(word.Length > 0)
+                        word = word.Remove(word.Length - 1);
+                    Writer.Backspace();
+                }
+                else if (Char.IsLetter((info.KeyChar)))
                 {
                    word += info.KeyChar;
                 }

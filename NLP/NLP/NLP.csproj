@@ -54,8 +54,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TextFiles\Emma.txt" />
     <Content Include="Input.txt" />
-    <Content Include="PrideAndPrejudice.txt" />
+    <Content Include="TextFiles\Persuation.txt" />
+    <Content Include="TextFiles\PrideAndPrejudice.txt" />
+    <Content Include="TextFiles\SenseAndSensibility.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

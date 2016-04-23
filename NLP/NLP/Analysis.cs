@@ -8,6 +8,8 @@ namespace NLP
 {
     public static class Analysis
     {
+        private static int edWeight = 50;
+        private static int probabilityWeight = 1;
         public static List<Tuple<double, string>> Evaluate(List<Tuple<double, string>> distribution, string currentWord)
         {
             List<Tuple<double, string>> valuation = new List<Tuple< double, string>>();
@@ -36,7 +38,7 @@ namespace NLP
         }
         private static double ComputeValue(int ed, double prob)
         {
-            return ((1 / (double)(ed + 1)) * prob);
+            return ((1 / ((double)(ed + 1)) * edWeight) * prob * probabilityWeight);
         }
 
     

@@ -12,7 +12,7 @@ namespace NLP
     {
         int modelDepth;
         Dictionary<string, Gram> model = new Dictionary<string, Gram>();
-        static string punctuation = "[\";,-_*]";
+        static string punctuation = "[\";,-_*()]";
         static string terminators = "[.!?]";
         public Model(int depth) { modelDepth = depth; }
         public void AddWord(string word)
@@ -62,7 +62,10 @@ namespace NLP
         public void ReadInputCorpus(string fileName)
         {
             Queue<string> chain = new Queue<string>();
-            string[] lines = System.IO.File.ReadAllLines("../../" + fileName);
+            //string[] lines = System.IO.File.ReadAllLines("../../" + fileName);
+
+            string[] lines = System.IO.File.ReadAllLines(fileName);
+            Console.WriteLine("Trained on file " + fileName);
             foreach (string line in lines)
             {
                 string stripped = Regex.Replace(line, punctuation, "");

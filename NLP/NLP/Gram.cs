@@ -8,9 +8,9 @@ namespace NLP
 {
     public class Gram
     {
-        string gram;
+        private string gram;
         public Dictionary<string, Gram> children = new Dictionary<string, Gram>();
-        int count;
+        private int count;
        
         public void Add(Queue<string> chain)
         {
