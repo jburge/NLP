@@ -21,17 +21,17 @@ namespace NLPRefactored
         public void Add(Queue<string> chain)
         {
             string nextWord = chain.Dequeue();
-            if (children.ContainsKey(nextWord))
-            {
-                children[nextWord].Increment(); ;
-            }
-            else
+            if (!children.ContainsKey(nextWord))
             {
                 children.Add(nextWord, new Gram(nextWord));
             }
             if (chain.Count > 0)
             {
                 children[nextWord].Add(chain);
+            }
+            else
+            {
+                children[nextWord].Increment();
             }
         }
         /// <summary>

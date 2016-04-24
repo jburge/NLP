@@ -14,7 +14,7 @@ namespace NLPRefactored
         int modelDepth;
         int eventCount;
         Dictionary<string, Gram> model = new Dictionary<string, Gram>();
-        static string punctuation = "[\";,-_*()\']";
+        static string punctuation = "[;,\\(\\)'\"\\-\\*\\_]"; //double single asterick
         static string terminators = "[.!?]";
         public Model(int depth) { 
             modelDepth = depth;
@@ -70,17 +70,17 @@ namespace NLPRefactored
         public void AddEvent(Queue<string> chain)
         {
             string firstWord = chain.Dequeue();
-            if (model.ContainsKey(firstWord))
-            {
-                model[firstWord].Increment(); ;
-            }
-            else
+            if (!model.ContainsKey(firstWord))
             {
                 model.Add(firstWord, new Gram(firstWord));
             }
             if (chain.Count > 0)
             {
                 model[firstWord].Add(chain);
+            }
+            else
+            {
+                model[firstWord].Increment();
             }
             eventCount++;
         }
@@ -132,15 +132,17 @@ namespace NLPRefactored
             //string[] lines = System.IO.File.ReadAllLines("../../" + fileName);
 
             string[] lines = System.IO.File.ReadAllLines(fileName);
-            Console.WriteLine("Trained on file " + fileName);
-            foreach (string line in lines)
+            for(int i = 0; i < lines.Count(); i++)
             {
-                string stripped = Regex.Replace(line, punctuation, "");
+                //Console.WriteLine(lines[i]);
+                string stripped = Regex.Replace(lines[i], punctuation, "");
                 //Console.WriteLine(stripped);
                 string[] phrases = stripped.Split(' ');
-                foreach (string phrase in phrases)
+                for (int j = 0; j < phrases.Count(); j++)
                 {
-                    string word = phrase.ToLower();
+                    //Console.WriteLine(phrases[j]);
+                    string word = phrases[j].ToLower();
+                    //Console.WriteLine(word);
                     string check = Regex.Replace(word, terminators, "");
                     if (check == "")
                         break;
@@ -153,6 +155,7 @@ namespace NLPRefactored
                     }
                 }
             }
+            Console.WriteLine("Trained on file " + fileName);
         }
         
         /// <summary>
@@ -166,15 +169,16 @@ namespace NLPRefactored
             return Analysis.EvaluateLikelihood(new Queue<string>(predicate.ToArray()), currentWord, this);
         }
 
-        public void DynamicRead(Queue<string> predicate, string currentWord)
+        public Queue<string> DynamicRead(Queue<string> predicate, string currentWord)
         {
             List<Tuple<double, string>> valuation = EvaluateState(predicate, currentWord);
             // update model
-            //predicate.Enqueue(currentWord);
-            //ChainPush(predicate);
+            predicate.Enqueue(currentWord);
+            AddEvent(predicate);
             // print through writer
             
-            Writer.WriteMetaData(currentWord, predicate);
+            Writer.WriteMetaData(predicate);
+            return predicate;
         }
 
         /////////////////////////////////////////////

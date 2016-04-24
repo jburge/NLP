@@ -12,7 +12,7 @@ namespace NLPRefactored
         public static int windowW = 120;
         public static int windowH = 50;
         private static int promptCount = 6;                     // number of prompts words to display
-        private static List<Tuple<double, string>> promptList;
+        private static List<Tuple<double, string>> promptList = new List<Tuple<double,string>>();
         public static void SetCursorCorner()
         {
             Console.CursorLeft = 0;
@@ -42,6 +42,7 @@ namespace NLPRefactored
             SetCursorCorner();
             for (int i = 0; i < promptCount && i < valuation.Count; i++)
             {
+                promptList.Add(valuation[i]);
                 Console.Write(String.Format("{2}){0}: {1:0.00}  ", valuation[i].Item2, valuation[i].Item1 * 100, (i + 1) % 10));
             }
             SetCursor(currLoc.Item1, currLoc.Item2);
@@ -62,7 +63,7 @@ namespace NLPRefactored
             SetCursor(0, 2);
             for (int i = 0; i < promptCount && i < values.Count; i++)
             {
-                Console.Write(String.Format("{2}){0}: {1:0.00}  ", values[i].Item2, EditDistance.ComputeEditDistanceDP(values[i].Item2, word) * 100, (i + 1) % 10));
+                Console.Write(String.Format("{2}){0}: {1:0.00}  ", values[i].Item2, EditDistance.ComputeEditDistanceDP(values[i].Item2, word), (i + 1) % 10));
             }
             SetCursor(currLoc.Item1, currLoc.Item2);
         }
@@ -96,7 +97,7 @@ namespace NLPRefactored
             Console.Write(newWord);
         }
 
-        public static void WriteMetaData(string word, Queue<string> chain)
+        public static void WriteMetaData(Queue<string> chain)
         {
             Tuple<int, int> currLoc = getCursorLoc();
             SetCursor(0, windowH - 2);
@@ -104,7 +105,7 @@ namespace NLPRefactored
             {
                 Console.Write(String.Format("{0}, ", chain.ElementAt(i)));
             }
-            Console.WriteLine(String.Format("{0}", word));
+            
             //Console.WriteLine(String.Format("pLoc = {0}, {1}; cLoc = {2}, {3}", pLoc.Item1, pLoc.Item2, cLoc.Item1, cLoc.Item2));
             SetCursor(currLoc);
         }

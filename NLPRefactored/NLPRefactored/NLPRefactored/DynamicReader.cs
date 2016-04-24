@@ -29,7 +29,8 @@ namespace NLPRefactored
                     }
                     if (chain.Count == model.getModelDepth())
                         chain.Dequeue();
-                    model.DynamicRead(chain, word);
+                    word.ToLower();
+                    chain = model.DynamicRead(chain, word);
                     chain.Enqueue(word);
                     wordBuffer = word;
                     word = "";
