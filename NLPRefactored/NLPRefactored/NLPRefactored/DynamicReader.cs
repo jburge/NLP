@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace NLPRefactored
 {
@@ -21,21 +23,28 @@ namespace NLPRefactored
             while (true)
             {
                 ConsoleKeyInfo info = Console.ReadKey();
-                if (info.Key == ConsoleKey.Spacebar)
+                if ((info.Key == ConsoleKey.Spacebar || info.Key == ConsoleKey.Subtract ) && writingWord)
                 {
                     if (!model.HasKey(wordBuffer) && wordBuffer != "")
                     {
                         model.AddWord(wordBuffer);
                     }
-                    if (chain.Count == model.getModelDepth())
-                        chain.Dequeue();
-                    word.ToLower();
-                    chain = model.DynamicRead(chain, word);
-                    chain.Enqueue(word);
-                    wordBuffer = word;
+                    word = Regex.Replace(word, Model.punctuation, "");
+                    string check = Regex.Replace(word, Model.terminators, "");
+                    if (check == "")
+                    {
+                        wordBuffer = check;
+                        word = "";
+                        lastLoc = currLoc;
+                        currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
+                        break;
+                    }
+                    check.ToLower();
+                    chain = model.DynamicRead(chain, check);
+                    wordBuffer = check;
                     word = "";
                     lastLoc = currLoc;
-                    currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
+                    currLoc = Writer.getCursorLoc();
                 }
                 else if (info.Key == ConsoleKey.Escape)
                 {
@@ -43,9 +52,11 @@ namespace NLPRefactored
                 }
                 else if (Char.IsNumber(info.KeyChar))
                 {
-                    Writer.ReWriteWord(Convert.ToInt32(info.KeyChar.ToString()), lastLoc);
-                    currLoc = Writer.getCursorLoc();
-
+                    if (!writingWord)
+                    {
+                        //Writer.ReWriteWord(Convert.ToInt32(info.KeyChar.ToString()), lastLoc);
+                        //currLoc = Writer.getCursorLoc();
+                    }
                 }
                 else if (info.Key == ConsoleKey.Enter) { }
                 else if (info.Key == ConsoleKey.Tab) { }

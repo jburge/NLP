@@ -14,8 +14,8 @@ namespace NLPRefactored
         int modelDepth;
         int eventCount;
         Dictionary<string, Gram> model = new Dictionary<string, Gram>();
-        static string punctuation = "[;,\\(\\)'\"\\*]"; //double single asterick
-        static string terminators = "[.!?]";
+        public static string punctuation = "[;,\\(\\)'\"\\*]"; 
+        public static string terminators = "[.!?]";
         public Model(int depth) { 
             modelDepth = depth;
             eventCount = 0;
@@ -167,24 +167,13 @@ namespace NLPRefactored
         {
             List<Tuple<double, string>> valuation = EvaluateState(predicate, currentWord);
             // update model
-            predicate.Enqueue(currentWord);
-            AddEvent(predicate);
+            predicate = ObserveEvent(predicate, currentWord);
+            
             // print through writer
             
             Writer.WriteMetaData(predicate);
             return predicate;
         }
-
-        //public void PrintDistribution(Queue<string> predicate)
-        //{
-        //    List<Tuple<double, string>> temp = Analysis.ExpectedWords(getGramFromChain(predicate), GetDictionary());
-        //    temp.Sort();
-        //    temp.Reverse();
-        //    for (int i = 0; i < 10; i++)
-        //    {
-        //        Console.WriteLine(temp[i]);
-        //    }
-        //}
 
         /////////////////////////////////////////////
         /// Functions to Print Model distribution ///
