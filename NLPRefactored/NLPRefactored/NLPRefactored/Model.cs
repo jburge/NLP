@@ -14,7 +14,7 @@ namespace NLPRefactored
         int modelDepth;
         int eventCount;
         Dictionary<string, Gram> model = new Dictionary<string, Gram>();
-        static string punctuation = "[;,\\(\\)'\"\\-\\*]"; //double single asterick
+        static string punctuation = "[;,\\(\\)'\"\\*]"; //double single asterick
         static string terminators = "[.!?]";
         public Model(int depth) { 
             modelDepth = depth;
@@ -131,7 +131,7 @@ namespace NLPRefactored
                 //Console.WriteLine(lines[i]);
                 string stripped = Regex.Replace(lines[i], punctuation, "");
                 //Console.WriteLine(stripped);
-                string[] phrases = stripped.Split(' ');
+                string[] phrases = stripped.Split(' ', '-', '_');
                 for (int j = 0; j < phrases.Count(); j++)
                 {
                     //Console.WriteLine(phrases[j]);
@@ -197,7 +197,7 @@ namespace NLPRefactored
         }
         private void DisplayUnigrams()
         {
-            List<Gram> list = model.Values.ToList().OrderBy(o => o.getWord()).ToList();
+            List<Gram> list = model.Values.ToList().OrderByDescending(o => o.getCount()).ToList();
             for (int i = 0; i < list.Count; i++)
             {
                 Console.WriteLine(list[i].getWord() + ": " + list[i].getCount());
@@ -205,7 +205,7 @@ namespace NLPRefactored
         }
         private void DisplayBigrams()
         {
-            List<Gram> list = model.Values.ToList().OrderBy(o => o.getWord()).ToList();
+            List<Gram> list = model.Values.ToList().OrderByDescending(o => o.getCount()).ToList();
             for (int i = 0; i < list.Count; i++)
             {
                 List<Gram> bigramList = list[i].getChildren();
@@ -217,7 +217,7 @@ namespace NLPRefactored
         }
         private void DisplayTrigrams()
         {
-            List<Gram> list = model.Values.ToList().OrderBy(o => o.getWord()).ToList();
+            List<Gram> list = model.Values.ToList().OrderByDescending(o => o.getCount()).ToList();
             for (int i = 0; i < list.Count; i++)
             {
                 List<Gram> bigramList = list[i].getChildren();
