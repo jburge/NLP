@@ -22,9 +22,12 @@ namespace NLPRefactored
             bool writingWord = false;
             while (true)
             {
+                currLoc = Writer.getCursorLoc();
+                Writer.PrintCursorInfo(currLoc, lastLoc);
                 ConsoleKeyInfo info = Console.ReadKey();
                 if ((info.Key == ConsoleKey.Spacebar || info.Key == ConsoleKey.Subtract ) && writingWord)
                 {
+                    writingWord = false;
                     if (wordBuffer != "")
                     {
                         chain = model.DynamicObserve(chain, wordBuffer);
@@ -35,7 +38,6 @@ namespace NLPRefactored
                     {
                         wordBuffer = check;
                         word = "";
-                        lastLoc = currLoc;
                         currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
                         break;
                     }
@@ -43,8 +45,6 @@ namespace NLPRefactored
                     chain = model.DynamicRead(chain, check);
                     wordBuffer = check;
                     word = "";
-                    lastLoc = currLoc;
-                    currLoc = Writer.getCursorLoc();
                 }
                 else if (info.Key == ConsoleKey.Escape)
                 {
@@ -54,23 +54,24 @@ namespace NLPRefactored
                 {
                     if (!writingWord)
                     {
-                        //Writer.ReWriteWord(Convert.ToInt32(info.KeyChar.ToString()), lastLoc);
-                        //currLoc = Writer.getCursorLoc();
+                        wordBuffer = Writer.ReWriteWord(Convert.ToInt32(info.KeyChar.ToString()), lastLoc);
+                        currLoc = Writer.getCursorLoc();
                     }
                 }
                 else if (info.Key == ConsoleKey.Enter) { }
                 else if (info.Key == ConsoleKey.Tab) { }
                 else if (info.Key == ConsoleKey.Backspace)
                 {
-                    //if (word.Length > 0)
-                    //    word = word.Remove(word.Length - 1);
-                    //Writer.Backspace();
+                    if (word.Length > 0)
+                        word = word.Remove(word.Length - 1);
+                    Writer.Backspace();
+
                 }
                 else if (Char.IsLetter((info.KeyChar)))
                 {
                     if(!writingWord)
                     {
-                        currLoc = Writer.getCursorLoc();
+                        lastLoc = currLoc;
                     }
                     writingWord = true;
                     word += info.KeyChar;

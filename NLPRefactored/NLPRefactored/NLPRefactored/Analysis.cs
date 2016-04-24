@@ -8,10 +8,10 @@ namespace NLPRefactored
 {
     public static class Analysis
     {
-        private static double scale = 100000;
-        private static double edWeight = 10000;
-        private static double unigramWeight = .1;
-        private static double bigramWeight = .5;
+        private static double scale = 1000;
+        private static double edWeight = 5;
+        private static double unigramWeight = .05;
+        private static double bigramWeight = .55;
         private static double trigramWeight = .4;
         
         public static List<Tuple<double, string>> EvaluateLikelihood(Queue<string> predicate, string currentWord, Model m)

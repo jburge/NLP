@@ -79,7 +79,7 @@ namespace NLPRefactored
                     Console.Write("");
                 double ed = ComputeEditDistanceDP(w_prime, currentWord);
                 if(ed != -1)
-                    editDistances.Add(new Tuple<double, string>(ed + 1, w_prime));//adding a one right now to prevent divide by 0
+                    editDistances.Add(new Tuple<double, string>(ed + .01, w_prime));//adding a one right now to prevent divide by 0
             }
             return editDistances.OrderBy(x =>x).ToList();
         }

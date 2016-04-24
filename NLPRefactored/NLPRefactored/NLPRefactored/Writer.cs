@@ -50,6 +50,7 @@ namespace NLPRefactored
         /// <param name="valuation"></param>
         public static void PrintPostWriteEvaluation(List<Tuple<double, string>> valuation)
         {
+            promptList = valuation;
             Tuple<int, int> currLoc = new Tuple<int,int>(Console.CursorLeft, Console.CursorTop);
             SetCursorCorner();
             ClearLine();
@@ -84,38 +85,34 @@ namespace NLPRefactored
         }
         public static void Backspace()
         {
-            Tuple<int, int> currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
-            Console.Write(currLoc);
-            if (currLoc.Item1 != 0) // not on edge
+            Tuple<int, int> pos = getCursorLoc();
+            if (pos.Item1 != 0) // not on edge
             {
-                SetCursor(currLoc.Item1, currLoc.Item2);
+                SetCursor(pos.Item1, pos.Item2);
                 Console.Write(" ");
-                SetCursor(currLoc.Item1, currLoc.Item2);
+                SetCursor(pos.Item1, pos.Item2);
             }
             else //if on edge now
             {
-                SetCursor(windowW - 1, currLoc.Item2 - 1);
+                SetCursor(windowW - 1, pos.Item2 - 1);
                 Console.Write(" ");
-                SetCursor(windowW - 1, currLoc.Item2 - 1);
+                SetCursor(windowW - 1, pos.Item2 - 1);
             }
         }
-        public static void ReWriteWord(int keyNumber, Tuple<int, int> start)
+        public static string ReWriteWord(int keyNumber, Tuple<int, int> start)
         {
             Tuple<int, int> currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
             SetCursor(start.Item1, start.Item2);
-            while (Console.CursorTop != currLoc.Item2 || Console.CursorLeft != currLoc.Item1)
-            {
-                Console.Write(" ");
-            }
-            SetCursor(start.Item1, start.Item2);
+            ClearLine();
             string newWord = promptList[(keyNumber + 9) % 10].Item2;
             Console.Write(newWord);
+            return newWord;
         }
 
         public static void WriteMetaData(Queue<string> chain, string word)
         {
-            Tuple<int, int> currLoc = getCursorLoc();
-            SetCursor(0, windowH - 2);
+            Tuple<int, int> pos = getCursorLoc();
+            SetCursor(0, windowH - 3);
             ClearLine();
             
             for(int i = 0; i < chain.Count; i++)
@@ -123,8 +120,19 @@ namespace NLPRefactored
                 Console.Write(String.Format("{0}, ", chain.ElementAt(i)));
             }
             Console.Write(String.Format("current word: {0}", word));
-            //Console.WriteLine(String.Format("pLoc = {0}, {1}; cLoc = {2}, {3}", pLoc.Item1, pLoc.Item2, cLoc.Item1, cLoc.Item2));
-            SetCursor(currLoc);
+            SetCursor(pos);
+        }
+        public static void PrintCursorInfo(Tuple<int, int> currLoc, Tuple<int, int> lastLoc)
+        {
+            Tuple<int, int> pos = getCursorLoc();
+            SetCursor(0, windowH - 2);
+            ClearLine();
+            Console.Write(String.Format("pLoc = {0}, {1}", lastLoc.Item1, lastLoc.Item2));
+            SetCursor(0, windowH - 1);
+            ClearLine();
+            Console.Write(String.Format("cLoc = {0}, {1}", currLoc.Item1, currLoc.Item2));
+            SetCursor(pos);
+
         }
     }
 }
