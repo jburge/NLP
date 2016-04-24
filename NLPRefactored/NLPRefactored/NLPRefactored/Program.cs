@@ -6,34 +6,34 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.IO;
 
-namespace NLP
+namespace NLPRefactored
 {
     class Program
     {
+        public static int windowW = 120;
+        public static int windowH = 50;
         static void Main(string[] args)
         {
-            Model model = RunModel();
-            Console.Clear();
+            SetUpWindow();
+            Model model = InitializeModel();
             DynamicReader.InputLoop(model);
         }
-        public static Model RunModel()
+
+        static void SetUpWindow()
         {
-            Model myModel = new Model(3);
+            Console.WindowWidth = windowW;
+            Console.WindowHeight = windowH;
+        }
+        static Model InitializeModel()
+        {
+            Model m = new Model(3);
             string txtFolderPath = "..\\..\\TextFiles\\";
             string[] files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
             foreach (string fileName in files)
             {
-                myModel.ReadInputCorpus(fileName);
+                m.TrainModel(fileName);
             }
-            return myModel;
-        }
-        public static void TestEdit()
-        {
-            string w1 = "sunday";
-            string w2 = "saturday";
-
-            int d = EditDistance.ComputeEditDistanceDP(w1, w2);
-            Console.WriteLine(w1 + " , " + w2 + " : " + d);
+            return m;
         }
     }
 }
