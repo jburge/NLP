@@ -25,9 +25,9 @@ namespace NLPRefactored
                 ConsoleKeyInfo info = Console.ReadKey();
                 if ((info.Key == ConsoleKey.Spacebar || info.Key == ConsoleKey.Subtract ) && writingWord)
                 {
-                    if (!model.HasKey(wordBuffer) && wordBuffer != "")
+                    if (wordBuffer != "")
                     {
-                        model.AddWord(wordBuffer);
+                        chain = model.DynamicObserve(chain, wordBuffer);
                     }
                     word = Regex.Replace(word, Model.punctuation, "");
                     string check = Regex.Replace(word, Model.terminators, "");

@@ -79,7 +79,6 @@ namespace NLPRefactored
                 model[firstWord].Add(chain);
             }
             model[firstWord].Increment();
-            eventCount++;
         }
         /// <summary>
         /// Pushes the Queue through into the model
@@ -88,7 +87,6 @@ namespace NLPRefactored
         /// <param name="chain"></param>
         private void ChainPush(Queue<string> chain)
         {
-            chain.Dequeue();
             while (chain.Count > 0)
             {
                 Queue<string> temp = new Queue<string>(chain.ToArray());
@@ -105,6 +103,8 @@ namespace NLPRefactored
         /// <returns>Returns a queue as the predicate for the next state</returns>
         private Queue<string> ObserveEvent(Queue<string> chain, string nextWord)
         {
+            eventCount++;
+
             chain.Enqueue(nextWord);
             if (chain.Count > modelDepth)
             {
@@ -114,6 +114,7 @@ namespace NLPRefactored
             AddEvent(temp);
             return chain;
         }
+
 
 
         /// <summary>
@@ -145,6 +146,7 @@ namespace NLPRefactored
                     ObserveEvent(chain, check);
                     if (terminator)
                     {
+                        chain.Dequeue();
                         ChainPush(chain);
                     }
                 }
@@ -167,14 +169,24 @@ namespace NLPRefactored
         {
             List<Tuple<double, string>> valuation = EvaluateState(predicate, currentWord);
             // update model
-            predicate = ObserveEvent(predicate, currentWord);
             
             // print through writer
             
-            Writer.WriteMetaData(predicate);
+            Writer.WriteMetaData(predicate, currentWord);
             return predicate;
         }
-
+        public Queue<string> DynamicObserve(Queue<string> chain, string nextWord)
+        {
+            eventCount++;
+            chain.Enqueue(nextWord);
+            if (chain.Count > modelDepth)
+            {
+                chain.Dequeue();
+            }
+            Queue<string> temp = new Queue<string>(chain.ToArray());
+            ChainPush(temp);
+            return chain;
+        }
         /////////////////////////////////////////////
         /// Functions to Print Model distribution ///
         /////////////////////////////////////////////

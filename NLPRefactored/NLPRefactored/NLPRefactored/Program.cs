@@ -15,6 +15,7 @@ namespace NLPRefactored
         {
             SetUpWindow();
             Model model = InitializeModel();
+            //TestEdit();
             //model.DisplayModel();
             DynamicReader.InputLoop(model);
         }
@@ -38,6 +39,14 @@ namespace NLPRefactored
             }
             Console.Clear();
             return m;
+        }
+        public static void TestEdit()
+        {
+            string w1 = "confustion";
+            string w2 = "hopefully";
+
+            double d = EditDistance.ComputeEditDistanceDP(w1, w2);
+            Console.WriteLine(w1 + " , " + w2 + " : " + d);
         }
     }
 }

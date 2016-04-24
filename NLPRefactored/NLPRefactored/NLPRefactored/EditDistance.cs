@@ -14,7 +14,10 @@ namespace NLPRefactored
     /// </summary>
     public static class EditDistance
     {
-        private static int cutoff = 3;                      // used to prevent wasteful computation
+        private static int cutoff = 7;                      // used to prevent wasteful computation
+        private static int insCost = 1;
+        private static int remCost = 1;
+        private static int repCost = 2;
         private static int min(int x, int y, int z){        // custom min function for 3 inputs
             return Math.Min( Math.Min( x, y), z);
         }
@@ -30,6 +33,7 @@ namespace NLPRefactored
             int[,] dp = new int[w1.Length+1,w2.Length+1];
             for (int i = 0; i <= w1.Length; i++)
             {
+                bool cut = true;
                 for (int j = 0; j <= w2.Length; j++)
                 {
                     if (i == 0){
@@ -42,22 +46,37 @@ namespace NLPRefactored
                         dp[i,j] = dp[i - 1,j - 1];
                     }
                     else {                 // insert,    remove,      replace (+1)
-                        dp[i,j] = 1 + min(dp[i,j - 1], dp[i - 1,j], dp[i - 1,j - 1]+1);
+                        dp[i,j] = min(dp[i,j - 1] + insCost, dp[i - 1,j] + remCost, dp[i - 1,j - 1] + repCost);
                         //prematurelly terminate if not promising
-                        if(dp[i,j] > cutoff)
-                        {
-                            return -1;
-                        }
+                    }
+                    if(dp[i,j] < cutoff)
+                    {
+                        cut = false;
                     }
                 }
+                if (cut)
+                {
+                    return  -1;
+                }
             }
-            return dp[w1.Length, w2.Length];
+            //for (int i = 0; i < w1.Length; i++)
+            //{
+            //    for (int j = 0; j < w2.Length; j++)
+            //    {
+            //        Console.Write(dp[i, j] + " ");
+            //    }
+            //    Console.WriteLine();
+            //}
+
+                return dp[w1.Length, w2.Length];
         }
         public static List<Tuple<double, string>> ComputeEditDistances(List<string> words, string currentWord)
         {
             List<Tuple<double, string>> editDistances = new List<Tuple<double, string>>();
             foreach (string w_prime in words)
             {
+                if (w_prime == "hope")
+                    Console.Write("");
                 double ed = ComputeEditDistanceDP(w_prime, currentWord);
                 if(ed != -1)
                     editDistances.Add(new Tuple<double, string>(ed + 1, w_prime));//adding a one right now to prevent divide by 0

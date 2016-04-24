@@ -8,9 +8,10 @@ namespace NLPRefactored
 {
     public static class Analysis
     {
-        private static double edWeight = 10;
-        private static double unigramWeight = .2;
-        private static double bigramWeight = .4;
+        private static double scale = 100000;
+        private static double edWeight = 10000;
+        private static double unigramWeight = .1;
+        private static double bigramWeight = .5;
         private static double trigramWeight = .4;
         
         public static List<Tuple<double, string>> EvaluateLikelihood(Queue<string> predicate, string currentWord, Model m)
@@ -44,7 +45,8 @@ namespace NLPRefactored
                 {
                     value += nWeights[i] * distributions[i][t.Item2];
                 }
-                value /= t.Item1 * edWeight;
+                value /= (t.Item1 * edWeight);
+                value *= scale;
                 values.Add(new Tuple<double, string>(value, t.Item2));
             }
             values.Sort();
@@ -68,26 +70,26 @@ namespace NLPRefactored
         }
         private static Dictionary<string, double> BigramDistribution(Model m, List<string> dictionary, Queue<string> predicate) 
         {
-            if (predicate.Count > 1)
+            if (predicate.Count >= 1)
             {
                 while (predicate.Count > 1)
                 {
                     predicate.Dequeue();
                 }
-                return LaplacianSmoothing(m.getGramFromChain(predicate), dictionary);
+                return LaplacianSmoothing(m.getGramFromChain(new Queue<string>(predicate.ToArray())), dictionary);
             }
             return null;
         }
 
         private static Dictionary<string, double> TrigramDistribution(Model m, List<string> dictionary, Queue<string> predicate) 
         {
-            if(predicate.Count > 2)
+            if(predicate.Count >= 2)
             {
                 while(predicate.Count > 2)
                 {
                     predicate.Dequeue();
                 }
-                return LaplacianSmoothing(m.getGramFromChain(predicate), dictionary);
+                return LaplacianSmoothing(m.getGramFromChain(new Queue<string>(predicate.ToArray())), dictionary);
             }
             return null;
         }
