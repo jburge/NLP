@@ -58,7 +58,9 @@ namespace NLPRefactored
             List<Tuple<double, string>> editDistances = new List<Tuple<double, string>>();
             foreach (string w_prime in words)
             {
-                editDistances.Add(new Tuple<double, string>(ComputeEditDistanceDP(w_prime, currentWord), w_prime));
+                double ed = ComputeEditDistanceDP(w_prime, currentWord);
+                if(ed != -1)
+                    editDistances.Add(new Tuple<double, string>(ed + 1, w_prime));//adding a one right now to prevent divide by 0
             }
             return editDistances.OrderBy(x =>x).ToList();
         }

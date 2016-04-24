@@ -170,10 +170,11 @@ namespace NLPRefactored
         {
             List<Tuple<double, string>> valuation = EvaluateState(predicate, currentWord);
             // update model
-            predicate.Enqueue(currentWord);
-            ChainPush(predicate);
+            //predicate.Enqueue(currentWord);
+            //ChainPush(predicate);
             // print through writer
             Writer.PrintPostWriteEvaluation(valuation);
+            Writer.WriteMetaData(currentWord, predicate);
         }
 
         /////////////////////////////////////////////

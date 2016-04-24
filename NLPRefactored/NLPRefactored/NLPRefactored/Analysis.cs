@@ -47,6 +47,8 @@ namespace NLPRefactored
                 value /= t.Item1 * edWeight;
                 values.Add(new Tuple<double, string>(value, t.Item2));
             }
+            values.Sort();
+            values.Reverse();
             return values;
         }
         private static Dictionary<string, double> UnigramDistribution(Model m, List<string> dictionary)
@@ -63,7 +65,7 @@ namespace NLPRefactored
         }
         private static Dictionary<string, double> BigramDistribution(Model m, List<string> dictionary, Queue<string> predicate) 
         {
-            if (predicate.Count < 1)
+            if (predicate.Count > 1)
             {
                 while (predicate.Count > 1)
                 {
@@ -76,7 +78,7 @@ namespace NLPRefactored
 
         private static Dictionary<string, double> TrigramDistribution(Model m, List<string> dictionary, Queue<string> predicate) 
         {
-            if(predicate.Count < 2)
+            if(predicate.Count > 2)
             {
                 while(predicate.Count > 2)
                 {

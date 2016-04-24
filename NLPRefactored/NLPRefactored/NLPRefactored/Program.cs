@@ -10,8 +10,7 @@ namespace NLPRefactored
 {
     class Program
     {
-        public static int windowW = 120;
-        public static int windowH = 50;
+       
         static void Main(string[] args)
         {
             SetUpWindow();
@@ -21,8 +20,8 @@ namespace NLPRefactored
 
         static void SetUpWindow()
         {
-            Console.WindowWidth = windowW;
-            Console.WindowHeight = windowH;
+            Console.WindowWidth = Writer.windowW;
+            Console.WindowHeight = Writer.windowH;
         }
         static Model InitializeModel()
         {
@@ -33,6 +32,7 @@ namespace NLPRefactored
             {
                 m.TrainModel(fileName);
             }
+            Console.Clear();
             return m;
         }
     }

@@ -9,6 +9,8 @@ namespace NLPRefactored
 {
     public static class Writer
     {
+        public static int windowW = 120;
+        public static int windowH = 50;
         private static int promptCount = 6;                     // number of prompts words to display
         private static List<Tuple<double, string>> promptList;
         public static void SetCursorCorner()
@@ -21,6 +23,14 @@ namespace NLPRefactored
             Console.CursorLeft = x;
             Console.CursorTop = y;
         }
+        public static void SetCursor(Tuple<int, int> coord)
+        {
+            SetCursor(coord.Item1, coord.Item2);
+        }
+        public static Tuple<int, int> getCursorLoc()
+        {
+            return new Tuple<int, int> (Console.CursorLeft, Console.CursorTop);
+        }
         /// <summary>
         /// Takes List of optimal alternitives to consider
         /// Writes these to top of screen
@@ -28,7 +38,6 @@ namespace NLPRefactored
         /// <param name="valuation"></param>
         public static void PrintPostWriteEvaluation(List<Tuple<double, string>> valuation)
         {
-            promptList = valuation;
             Tuple<int, int> currLoc = new Tuple<int,int>(Console.CursorLeft, Console.CursorTop);
             SetCursorCorner();
             for (int i = 0; i < promptCount && i < valuation.Count; i++)
@@ -50,9 +59,9 @@ namespace NLPRefactored
             }
             else //if on edge now
             {
-                SetCursor(Program.windowW - 1, currLoc.Item2 - 1);
+                SetCursor(windowW - 1, currLoc.Item2 - 1);
                 Console.Write(" ");
-                SetCursor(Program.windowW - 1, currLoc.Item2 - 1);
+                SetCursor(windowW - 1, currLoc.Item2 - 1);
             }
         }
         public static void ReWriteWord(int keyNumber, Tuple<int, int> start)
@@ -68,6 +77,17 @@ namespace NLPRefactored
             Console.Write(newWord);
         }
 
-
+        public static void WriteMetaData(string word, Queue<string> chain)
+        {
+            Tuple<int, int> currLoc = getCursorLoc();
+            SetCursor(0, windowH - 2);
+            for(int i = 0; i < chain.Count; i++)
+            {
+                Console.Write(String.Format("{0}, ", chain.ElementAt(i)));
+            }
+            Console.WriteLine(String.Format("{0}", word));
+            //Console.WriteLine(String.Format("pLoc = {0}, {1}; cLoc = {2}, {3}", pLoc.Item1, pLoc.Item2, cLoc.Item1, cLoc.Item2));
+            SetCursor(currLoc);
+        }
     }
 }
