@@ -46,7 +46,26 @@ namespace NLPRefactored
             }
             SetCursor(currLoc.Item1, currLoc.Item2);
         }
-
+        public static void PrintProbabilityDistribution(List<Tuple<double, string>> values, Dictionary<string, double> dist)
+        {
+            Tuple<int, int> currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
+            SetCursor(0,1);
+            for (int i = 0; i < promptCount && i < values.Count; i++)
+            {
+                Console.Write(String.Format("{2}){0}: {1:0.00}  ", values[i].Item2, dist[values[i].Item2] * 100, (i + 1) % 10));
+            }
+            SetCursor(currLoc.Item1, currLoc.Item2);
+        }
+        public static void PrintEditDistance(List<Tuple<double, string>> values, List<Tuple<double, string>> edList, string word)
+        {
+            Tuple<int, int> currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
+            SetCursor(0, 2);
+            for (int i = 0; i < promptCount && i < values.Count; i++)
+            {
+                Console.Write(String.Format("{2}){0}: {1:0.00}  ", values[i].Item2, EditDistance.ComputeEditDistanceDP(values[i].Item2, word) * 100, (i + 1) % 10));
+            }
+            SetCursor(currLoc.Item1, currLoc.Item2);
+        }
         public static void Backspace()
         {
             Tuple<int, int> currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);

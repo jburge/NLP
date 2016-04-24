@@ -49,6 +49,9 @@ namespace NLPRefactored
             }
             values.Sort();
             values.Reverse();
+            Writer.PrintPostWriteEvaluation(values);
+            Writer.PrintProbabilityDistribution(values, distributions[0]);
+            Writer.PrintEditDistance(values, ed, currentWord);
             return values;
         }
         private static Dictionary<string, double> UnigramDistribution(Model m, List<string> dictionary)

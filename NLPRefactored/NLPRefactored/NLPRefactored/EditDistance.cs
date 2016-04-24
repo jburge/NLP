@@ -24,7 +24,7 @@ namespace NLPRefactored
         /// <param name="w1"></param>
         /// <param name="w2"></param>
         /// <returns>Integer edit distance value</returns>
-        private static double ComputeEditDistanceDP(string w1, string w2)
+        public static double ComputeEditDistanceDP(string w1, string w2)
         {
             //List<List<int>> dp = new List<List<int>>();
             int[,] dp = new int[w1.Length+1,w2.Length+1];

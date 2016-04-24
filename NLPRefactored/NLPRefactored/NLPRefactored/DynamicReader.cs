@@ -11,7 +11,7 @@ namespace NLPRefactored
 
         public static void InputLoop(Model model)
         {
-            Writer.SetCursor(0, 2);
+            Writer.SetCursor(0, 5);
             Queue<string> chain = new Queue<string>();
             string word = "";
             Tuple<int, int> lastLoc = new Tuple<int, int>(0, 0);

@@ -173,7 +173,7 @@ namespace NLPRefactored
             //predicate.Enqueue(currentWord);
             //ChainPush(predicate);
             // print through writer
-            Writer.PrintPostWriteEvaluation(valuation);
+            
             Writer.WriteMetaData(currentWord, predicate);
         }
 
