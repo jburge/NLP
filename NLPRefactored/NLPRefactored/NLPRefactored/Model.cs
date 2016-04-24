@@ -14,7 +14,7 @@ namespace NLPRefactored
         int modelDepth;
         int eventCount;
         Dictionary<string, Gram> model = new Dictionary<string, Gram>();
-        static string punctuation = "[;,\\(\\)'\"\\-\\*\\_]"; //double single asterick
+        static string punctuation = "[;,\\(\\)'\"\\-\\*]"; //double single asterick
         static string terminators = "[.!?]";
         public Model(int depth) { 
             modelDepth = depth;
@@ -78,10 +78,7 @@ namespace NLPRefactored
             {
                 model[firstWord].Add(chain);
             }
-            else
-            {
-                model[firstWord].Increment();
-            }
+            model[firstWord].Increment();
             eventCount++;
         }
         /// <summary>
@@ -113,11 +110,8 @@ namespace NLPRefactored
             {
                 chain.Dequeue();
             }
-            if (chain.Count == modelDepth)
-            {
-                Queue<string> temp = new Queue<string>(chain.ToArray());
-                AddEvent(temp);
-            }
+            Queue<string> temp = new Queue<string>(chain.ToArray());
+            AddEvent(temp);
             return chain;
         }
 
@@ -181,14 +175,25 @@ namespace NLPRefactored
             return predicate;
         }
 
+        //public void PrintDistribution(Queue<string> predicate)
+        //{
+        //    List<Tuple<double, string>> temp = Analysis.ExpectedWords(getGramFromChain(predicate), GetDictionary());
+        //    temp.Sort();
+        //    temp.Reverse();
+        //    for (int i = 0; i < 10; i++)
+        //    {
+        //        Console.WriteLine(temp[i]);
+        //    }
+        //}
+
         /////////////////////////////////////////////
         /// Functions to Print Model distribution ///
         /////////////////////////////////////////////
         public void DisplayModel()
         {
             DisplayUnigrams();
-            DisplayBigrams();
-            DisplayTrigrams();
+            //DisplayBigrams();
+            //DisplayTrigrams();
         }
         private void DisplayUnigrams()
         {

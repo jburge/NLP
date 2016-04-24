@@ -14,7 +14,7 @@ namespace NLPRefactored
     /// </summary>
     public static class EditDistance
     {
-        private static int cutoff = 5;                      // used to prevent wasteful computation
+        private static int cutoff = 3;                      // used to prevent wasteful computation
         private static int min(int x, int y, int z){        // custom min function for 3 inputs
             return Math.Min( Math.Min( x, y), z);
         }

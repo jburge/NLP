@@ -15,9 +15,13 @@ namespace NLPRefactored
         {
             SetUpWindow();
             Model model = InitializeModel();
+            //model.DisplayModel();
             DynamicReader.InputLoop(model);
         }
-
+        static void GetInfo(Model model){
+            string temp = Console.ReadLine();
+            Console.WriteLine(model.GetWordCount(temp)); 
+        }
         static void SetUpWindow()
         {
             Console.WindowWidth = Writer.windowW;

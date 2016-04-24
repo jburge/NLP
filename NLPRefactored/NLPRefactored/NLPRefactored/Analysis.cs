@@ -103,6 +103,20 @@ namespace NLPRefactored
                 probabilityDistribution.Add(word, count / (double)predicateFrequency);
             }
             return probabilityDistribution;
-        }    
+        }   
+        public static List<Tuple<double, string>> ExpectedWords(Gram pState, List<string> dictionary)
+        {
+            List<Tuple<double, string>> probabilityDistribution = new List<Tuple<double, string>>();
+            int predicateFrequency = pState.getCount();
+            predicateFrequency += dictionary.Count;     // the plus one smoothing
+            foreach (string word in dictionary)
+            {
+                int count = 1;                          // the plus one smoothing
+                count += pState.NextWordCount(word);
+                probabilityDistribution.Add(new Tuple<double, string>(count * 100 / (double)predicateFrequency, word));
+            }
+            return probabilityDistribution;
+        } 
     }
+    
 }

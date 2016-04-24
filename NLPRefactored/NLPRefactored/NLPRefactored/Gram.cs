@@ -15,7 +15,7 @@ namespace NLPRefactored
         public Gram(string word)
         {
             gram = word;
-            count = 1;
+            count = 0;
         }
 
         public void Add(Queue<string> chain)
@@ -29,11 +29,8 @@ namespace NLPRefactored
             {
                 children[nextWord].Add(chain);
             }
-            else
-            {
                 children[nextWord].Increment();
             }
-        }
         /// <summary>
         /// Gets the frequency of word w appearing as the next word given this state
         /// </summary>
