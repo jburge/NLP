@@ -48,7 +48,7 @@ namespace NLPRefactored
                     else if (w1[i - 1] == w2[j - 1]) {
                         dp[i,j] = dp[i - 1,j - 1];
                     }
-                    else {                 // insert,    remove,      replace (+1)
+                    else {                 // insert,    remove,      replace
                         dp[i,j] = min(dp[i,j - 1] + insCost, dp[i - 1,j] + remCost, dp[i - 1,j - 1] + subCost);
                     }
                     if(dp[i,j] < cutoff)
@@ -79,7 +79,7 @@ namespace NLPRefactored
             {
                 double ed = ComputeEditDistanceDP(w_prime, currentWord);
                 if(ed != -1)
-                    editDistances.Add(new Tuple<double, string>(ed + .01, w_prime));//adding a one right now to prevent divide by 0
+                    editDistances.Add(new Tuple<double, string>(ed + .0001, w_prime));//adding a one right now to prevent divide by 0
             }
             return editDistances.OrderBy(x =>x).ToList();
         }
