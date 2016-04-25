@@ -42,8 +42,8 @@ namespace NLPRefactored
         }
         public static void TestEdit()
         {
-            string w1 = "confustion";
-            string w2 = "hopefully";
+            string w1 = "intention";
+            string w2 = "execution";
 
             double d = EditDistance.ComputeEditDistanceDP(w1, w2);
             Console.WriteLine(w1 + " , " + w2 + " : " + d);

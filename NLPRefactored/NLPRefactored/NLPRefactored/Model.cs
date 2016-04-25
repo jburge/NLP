@@ -14,7 +14,7 @@ namespace NLPRefactored
         int modelDepth;
         int eventCount;
         Dictionary<string, Gram> model = new Dictionary<string, Gram>();
-        public static string punctuation = "[;,\\(\\)'\"\\*]"; 
+        public static string punctuation = "[;,\\(\\)'\"\\*:]"; 
         public static string terminators = "[.!?]";
         public Model(int depth) { 
             modelDepth = depth;

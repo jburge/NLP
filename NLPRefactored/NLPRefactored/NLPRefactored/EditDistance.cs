@@ -14,10 +14,10 @@ namespace NLPRefactored
     /// </summary>
     public static class EditDistance
     {
-        private static int cutoff = 7;                      // used to prevent wasteful computation
+        private static int cutoff = 4;                      // used to prevent wasteful computation
         private static int insCost = 1;
         private static int remCost = 1;
-        private static int repCost = 2;
+        private static int subCost = 3;
         private static int min(int x, int y, int z){        // custom min function for 3 inputs
             return Math.Min( Math.Min( x, y), z);
         }
@@ -27,10 +27,13 @@ namespace NLPRefactored
         /// <param name="w1"></param>
         /// <param name="w2"></param>
         /// <returns>Integer edit distance value</returns>
-        public static double ComputeEditDistanceDP(string w1, string w2)
+        public static int ComputeEditDistanceDP(string w1, string w2)
         {
-            //List<List<int>> dp = new List<List<int>>();
+            int lengthDif = Math.Abs(w1.Length - w2.Length);
+            if (lengthDif > cutoff)
+                return -1;
             int[,] dp = new int[w1.Length+1,w2.Length+1];
+
             for (int i = 0; i <= w1.Length; i++)
             {
                 bool cut = true;
@@ -46,8 +49,7 @@ namespace NLPRefactored
                         dp[i,j] = dp[i - 1,j - 1];
                     }
                     else {                 // insert,    remove,      replace (+1)
-                        dp[i,j] = min(dp[i,j - 1] + insCost, dp[i - 1,j] + remCost, dp[i - 1,j - 1] + repCost);
-                        //prematurelly terminate if not promising
+                        dp[i,j] = min(dp[i,j - 1] + insCost, dp[i - 1,j] + remCost, dp[i - 1,j - 1] + subCost);
                     }
                     if(dp[i,j] < cutoff)
                     {
@@ -75,8 +77,6 @@ namespace NLPRefactored
             List<Tuple<double, string>> editDistances = new List<Tuple<double, string>>();
             foreach (string w_prime in words)
             {
-                if (w_prime == "hope")
-                    Console.Write("");
                 double ed = ComputeEditDistanceDP(w_prime, currentWord);
                 if(ed != -1)
                     editDistances.Add(new Tuple<double, string>(ed + .01, w_prime));//adding a one right now to prevent divide by 0

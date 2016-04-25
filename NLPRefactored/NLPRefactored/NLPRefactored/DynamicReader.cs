@@ -38,7 +38,6 @@ namespace NLPRefactored
                     {
                         wordBuffer = check;
                         word = "";
-                        currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
                         break;
                     }
                     check.ToLower();
