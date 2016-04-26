@@ -10,7 +10,6 @@ namespace NLPRefactored
 {
     public static class DynamicReader
     {
-
         public static void InputLoop(Model model)
         {
             Writer.SetCursor(0, 5);
@@ -25,27 +24,7 @@ namespace NLPRefactored
                 currLoc = Writer.getCursorLoc();
                 Writer.PrintCursorInfo(currLoc, lastLoc);
                 ConsoleKeyInfo info = Console.ReadKey();
-                if ((info.Key == ConsoleKey.Spacebar || info.Key == ConsoleKey.Subtract ) && writingWord)
-                {
-                    writingWord = false;
-                    if (wordBuffer != "")
-                    {
-                        chain = model.DynamicObserve(chain, wordBuffer);
-                    }
-                    word = Regex.Replace(word, Model.punctuation, "");
-                    string check = Regex.Replace(word, Model.terminators, "");
-                    if (check == "")
-                    {
-                        wordBuffer = check;
-                        word = "";
-                        break;
-                    }
-                    check.ToLower();
-                    chain = model.DynamicRead(chain, check);
-                    wordBuffer = check;
-                    word = "";
-                }
-                else if (info.Key == ConsoleKey.Escape)
+                if (info.Key == ConsoleKey.Escape)
                 {
                     break;
                 }
@@ -53,27 +32,61 @@ namespace NLPRefactored
                 {
                     if (!writingWord)
                     {
-                        wordBuffer = Writer.ReWriteWord(Convert.ToInt32(info.KeyChar.ToString()), lastLoc);
-                        currLoc = Writer.getCursorLoc();
+                        wordBuffer = Writer.ReWriteWord(Convert.ToInt32(info.KeyChar.ToString()), lastLoc, wordBuffer != wordBuffer.ToLower());
                     }
                 }
-                else if (info.Key == ConsoleKey.Enter) { }
+                else if ((Model.terminators.Contains(info.KeyChar) || info.Key == ConsoleKey.Enter) && writingWord)         //end sentence
+                {
+                    writingWord = false;
+                    if (wordBuffer != "")
+                    {
+                        chain = model.DynamicObserve(chain, wordBuffer.ToLower());
+                        wordBuffer = "";
+                    }
+                    chain = model.DynamicRead(chain, word.ToLower());
+                    //reset
+                    if (word != "")
+                    {
+                        chain = model.DynamicObserve(chain, word.ToLower());
+                        word = "";
+                    }
+                    chain = model.ChainPush(chain);
+                }
+                else if ((Char.IsPunctuation(info.KeyChar) || info.Key == ConsoleKey.Spacebar) && writingWord)              //end word
+                {
+                    //do space stuff
+                    writingWord = false;
+                    if (wordBuffer != "")
+                    {
+                        chain = model.DynamicObserve(chain, wordBuffer.ToLower());
+                    }
+                    chain = model.DynamicRead(chain, word.ToLower());
+                    //reset
+                    wordBuffer = word;
+                    word = "";
+                }
                 else if (info.Key == ConsoleKey.Tab) { }
                 else if (info.Key == ConsoleKey.Backspace)
                 {
                     if (word.Length > 0)
                         word = word.Remove(word.Length - 1);
+                    else
+                        wordBuffer = "";
                     Writer.Backspace();
-
                 }
-                else if (Char.IsLetter((info.KeyChar)))
+                else if (Char.IsLetter(info.KeyChar))
                 {
                     if(!writingWord)
                     {
                         lastLoc = currLoc;
+                        writingWord = true;
                     }
-                    writingWord = true;
                     word += info.KeyChar;
+                }
+                ///////////////////
+                if (ConsoleKey.Enter == info.Key)
+                {
+                    Console.WriteLine();
                 }
             }
         }

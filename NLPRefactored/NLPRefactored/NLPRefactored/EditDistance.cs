@@ -14,10 +14,10 @@ namespace NLPRefactored
     /// </summary>
     public static class EditDistance
     {
-        private static int cutoff = 4;                      // used to prevent wasteful computation
+        private static int cutoff = 5;                      // used to prevent wasteful computation
         private static int insCost = 1;
         private static int remCost = 1;
-        private static int subCost = 3;
+        private static int subCost = 2;
         private static int min(int x, int y, int z){        // custom min function for 3 inputs
             return Math.Min( Math.Min( x, y), z);
         }
@@ -51,26 +51,22 @@ namespace NLPRefactored
                     else {                 // insert,    remove,      replace
                         dp[i,j] = min(dp[i,j - 1] + insCost, dp[i - 1,j] + remCost, dp[i - 1,j - 1] + subCost);
                     }
-                    if(dp[i,j] < cutoff)
+                    if (w2.Length - j <= w1.Length - i)
                     {
-                        cut = false;
+                        if (dp[i, j] < cutoff)
+                        {
+                            cut = false;
+                        }
                     }
+                    //Console.Write(dp[i, j] + " ");
                 }
                 if (cut)
                 {
                     return  -1;
                 }
+                //Console.WriteLine();
             }
-            //for (int i = 0; i < w1.Length; i++)
-            //{
-            //    for (int j = 0; j < w2.Length; j++)
-            //    {
-            //        Console.Write(dp[i, j] + " ");
-            //    }
-            //    Console.WriteLine();
-            //}
-
-                return dp[w1.Length, w2.Length];
+            return dp[w1.Length, w2.Length];
         }
         public static List<Tuple<double, string>> ComputeEditDistances(List<string> words, string currentWord)
         {

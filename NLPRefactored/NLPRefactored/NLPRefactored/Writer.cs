@@ -99,12 +99,16 @@ namespace NLPRefactored
                 SetCursor(windowW - 1, pos.Item2 - 1);
             }
         }
-        public static string ReWriteWord(int keyNumber, Tuple<int, int> start)
+        public static string ReWriteWord(int keyNumber, Tuple<int, int> start, bool capitalize)
         {
             Tuple<int, int> currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
             SetCursor(start.Item1, start.Item2);
             ClearLine();
             string newWord = promptList[(keyNumber + 9) % 10].Item2;
+            if(capitalize)
+            {
+                newWord = newWord.Substring(0, 1).ToUpper() + newWord.Substring(1, newWord.Length - 1);
+            }
             Console.Write(newWord);
             return newWord;
         }

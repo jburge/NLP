@@ -14,8 +14,11 @@ namespace NLPRefactored
         int modelDepth;
         int eventCount;
         Dictionary<string, Gram> model = new Dictionary<string, Gram>();
-        public static string punctuation = "[;,\\(\\)'\"\\*:]"; 
-        public static string terminators = "[.!?]";
+        public static string punctuation = ";,\\(\\)'\"\\*:";
+        public static string terminators = ".!?";
+        public static string wordBreak = " -_";
+        public static string RegexPunctuation = "[" + punctuation + "]";
+        public static string RegexTerminators = "[" + terminators + "]";
         public Model(int depth) { 
             modelDepth = depth;
             eventCount = 0;
@@ -85,7 +88,7 @@ namespace NLPRefactored
         /// Typical use case if when a terminator is hit, and thus a new queue will start for the next sentence
         /// </summary>
         /// <param name="chain"></param>
-        private void ChainPush(Queue<string> chain)
+        public Queue<string> ChainPush(Queue<string> chain)
         {
             while (chain.Count > 0)
             {
@@ -93,6 +96,7 @@ namespace NLPRefactored
                 AddEvent(temp);
                 chain.Dequeue();
             }
+            return chain;
         }
 
         /// <summary>
@@ -130,7 +134,7 @@ namespace NLPRefactored
             for(int i = 0; i < lines.Count(); i++)
             {
                 //Console.WriteLine(lines[i]);
-                string stripped = Regex.Replace(lines[i], punctuation, "");
+                string stripped = Regex.Replace(lines[i], RegexPunctuation, "");
                 //Console.WriteLine(stripped);
                 string[] phrases = stripped.Split(' ', '-', '_');
                 for (int j = 0; j < phrases.Count(); j++)
@@ -138,7 +142,7 @@ namespace NLPRefactored
                     //Console.WriteLine(phrases[j]);
                     string word = phrases[j].ToLower();
                     //Console.WriteLine(word);
-                    string check = Regex.Replace(word, terminators, "");
+                    string check = Regex.Replace(word, RegexTerminators, "");
                     if (check == "")
                         break;
                     //Console.WriteLine(check);
@@ -147,7 +151,7 @@ namespace NLPRefactored
                     if (terminator)
                     {
                         chain.Dequeue();
-                        ChainPush(chain);
+                        chain = ChainPush(chain);
                     }
                 }
             }
