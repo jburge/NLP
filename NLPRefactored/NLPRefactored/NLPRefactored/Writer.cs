@@ -12,7 +12,11 @@ namespace NLPRefactored
         public static int windowW = 120;
         public static int windowH = 50;
         private static int promptCount = 6;                     // number of prompts words to display
+
         private static List<Tuple<double, string>> promptList = new List<Tuple<double,string>>();
+        private static Tuple<int, int> pos = new Tuple<int, int>(0,0);
+
+
         public static void SetCursorCorner()
         {
             Console.CursorLeft = 0;
@@ -33,7 +37,7 @@ namespace NLPRefactored
         }
         public static void ClearLine()
         {
-            Tuple<int, int> pos = getCursorLoc();
+            pos = getCursorLoc();
             string whiteSpace = "";
             int x = pos.Item1;
             while(x++<windowW)
@@ -51,7 +55,7 @@ namespace NLPRefactored
         public static void PrintPostWriteEvaluation(List<Tuple<double, string>> valuation)
         {
             promptList = valuation;
-            Tuple<int, int> currLoc = new Tuple<int,int>(Console.CursorLeft, Console.CursorTop);
+            pos = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
             SetCursorCorner();
             ClearLine();
             for (int i = 0; i < promptCount && i < valuation.Count; i++)
@@ -59,33 +63,33 @@ namespace NLPRefactored
                 promptList.Add(valuation[i]);
                 Console.Write(String.Format("{2}){0}: {1:0.00}  ", valuation[i].Item2, valuation[i].Item1 * 100, (i + 1) % 10));
             }
-            SetCursor(currLoc.Item1, currLoc.Item2);
+            SetCursor(pos.Item1, pos.Item2);
         }
         public static void PrintProbabilityDistribution(List<Tuple<double, string>> values, Dictionary<string, double> dist)
         {
-            Tuple<int, int> currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
+            pos = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
             SetCursor(0,1);
             ClearLine();
             for (int i = 0; i < promptCount && i < values.Count; i++)
             {
                 Console.Write(String.Format("{2}){0}: {1:0.00}  ", values[i].Item2, dist[values[i].Item2] * 100, (i + 1) % 10));
             }
-            SetCursor(currLoc.Item1, currLoc.Item2);
+            SetCursor(pos.Item1, pos.Item2);
         }
         public static void PrintEditDistance(List<Tuple<double, string>> values, List<Tuple<double, string>> edList, string word)
         {
-            Tuple<int, int> currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
+            pos = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
             SetCursor(0, 2);
             ClearLine();
             for (int i = 0; i < promptCount && i < values.Count; i++)
             {
                 Console.Write(String.Format("{2}){0}: {1:0.00}  ", values[i].Item2, EditDistance.ComputeEditDistanceDP(values[i].Item2, word), (i + 1) % 10));
             }
-            SetCursor(currLoc.Item1, currLoc.Item2);
+            SetCursor(pos.Item1, pos.Item2);
         }
         public static void Backspace()
         {
-            Tuple<int, int> pos = getCursorLoc();
+            pos = getCursorLoc();
             if (pos.Item1 != 0) // not on edge
             {
                 SetCursor(pos.Item1, pos.Item2);
@@ -101,7 +105,7 @@ namespace NLPRefactored
         }
         public static string ReWriteWord(int keyNumber, Tuple<int, int> start, bool capitalize)
         {
-            Tuple<int, int> currLoc = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
+            pos = getCursorLoc();
             SetCursor(start.Item1, start.Item2);
             ClearLine();
             string newWord = promptList[(keyNumber + 9) % 10].Item2;
@@ -115,7 +119,7 @@ namespace NLPRefactored
 
         public static void WriteMetaData(Queue<string> chain, string word)
         {
-            Tuple<int, int> pos = getCursorLoc();
+            pos = getCursorLoc();
             SetCursor(0, windowH - 3);
             ClearLine();
             
@@ -128,7 +132,7 @@ namespace NLPRefactored
         }
         public static void PrintCursorInfo(Tuple<int, int> currLoc, Tuple<int, int> lastLoc)
         {
-            Tuple<int, int> pos = getCursorLoc();
+            pos = getCursorLoc();
             SetCursor(0, windowH - 2);
             ClearLine();
             Console.Write(String.Format("pLoc = {0}, {1}", lastLoc.Item1, lastLoc.Item2));

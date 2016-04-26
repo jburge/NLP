@@ -6,6 +6,15 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.IO;
 
+
+//// THings to add
+// save model state
+// write into text file
+// auto complete
+// mess with window settings
+    // allow scrolling
+
+
 namespace NLPRefactored
 {
     class Program

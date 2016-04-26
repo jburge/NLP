@@ -10,20 +10,27 @@ namespace NLPRefactored
 {
     public static class DynamicReader
     {
+        private static int topLine = 5;
+
+        private static Tuple<int, int> lastLoc = new Tuple<int, int>(0, 0);
+        private static Tuple<int, int> currLoc = new Tuple<int, int>(0, 0);
+
+        private static Queue<string> chain = new Queue<string>();
+
+        private static string word = "";
+        private static string wordBuffer = "";
+
+        private static bool writingWord = false;
+
+        private static ConsoleKeyInfo info;
         public static void InputLoop(Model model)
         {
-            Writer.SetCursor(0, 5);
-            Queue<string> chain = new Queue<string>();
-            string word = "";
-            Tuple<int, int> lastLoc = new Tuple<int, int>(0, 0);
-            Tuple<int, int> currLoc = new Tuple<int, int>(0, 0);
-            string wordBuffer = "";
-            bool writingWord = false;
+            Writer.SetCursor(0, topLine);
             while (true)
             {
                 currLoc = Writer.getCursorLoc();
                 Writer.PrintCursorInfo(currLoc, lastLoc);
-                ConsoleKeyInfo info = Console.ReadKey();
+                info = Console.ReadKey();
                 if (info.Key == ConsoleKey.Escape)
                 {
                     break;
@@ -37,42 +44,16 @@ namespace NLPRefactored
                 }
                 else if ((Model.terminators.Contains(info.KeyChar) || info.Key == ConsoleKey.Enter) && writingWord)         //end sentence
                 {
-                    writingWord = false;
-                    if (wordBuffer != "")
-                    {
-                        chain = model.DynamicObserve(chain, wordBuffer.ToLower());
-                        wordBuffer = "";
-                    }
-                    chain = model.DynamicRead(chain, word.ToLower());
-                    //reset
-                    if (word != "")
-                    {
-                        chain = model.DynamicObserve(chain, word.ToLower());
-                        word = "";
-                    }
-                    chain = model.ChainPush(chain);
+                    EndSentence(model);
                 }
                 else if ((Char.IsPunctuation(info.KeyChar) || info.Key == ConsoleKey.Spacebar) && writingWord)              //end word
                 {
-                    //do space stuff
-                    writingWord = false;
-                    if (wordBuffer != "")
-                    {
-                        chain = model.DynamicObserve(chain, wordBuffer.ToLower());
-                    }
-                    chain = model.DynamicRead(chain, word.ToLower());
-                    //reset
-                    wordBuffer = word;
-                    word = "";
+                    EndWord(model);
                 }
                 else if (info.Key == ConsoleKey.Tab) { }
                 else if (info.Key == ConsoleKey.Backspace)
                 {
-                    if (word.Length > 0)
-                        word = word.Remove(word.Length - 1);
-                    else
-                        wordBuffer = "";
-                    Writer.Backspace();
+                    BackSpace();
                 }
                 else if (Char.IsLetter(info.KeyChar))
                 {
@@ -89,6 +70,44 @@ namespace NLPRefactored
                     Console.WriteLine();
                 }
             }
+        }
+        private static void EndSentence(Model model)
+        {
+            writingWord = false;
+            if (wordBuffer != "")
+            {
+                chain = model.DynamicObserve(chain, wordBuffer.ToLower());
+                wordBuffer = "";
+            }
+            chain = model.DynamicRead(chain, word.ToLower());
+            //reset
+            if (word != "")
+            {
+                chain = model.DynamicObserve(chain, word.ToLower());
+                word = "";
+            }
+            chain = model.ChainPush(chain);
+        }
+        private static void EndWord(Model model)
+        {
+            //do space stuff
+            writingWord = false;
+            if (wordBuffer != "")
+            {
+                chain = model.DynamicObserve(chain, wordBuffer.ToLower());
+            }
+            chain = model.DynamicRead(chain, word.ToLower());
+            //reset
+            wordBuffer = word;
+            word = "";
+        }
+        private static void BackSpace()
+        {
+            if (word.Length > 0)
+                word = word.Remove(word.Length - 1);
+            else
+                wordBuffer = "";
+            Writer.Backspace();
         }
     }
 }
