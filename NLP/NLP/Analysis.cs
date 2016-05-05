@@ -13,19 +13,27 @@ namespace NLP
         private static double unigramWeight = .01;
         private static double bigramWeight = .645;
         private static double trigramWeight = .345;
+        private static Dictionary<string, double> trigramDist;
+        private static Dictionary<string, double> bigramDist;
+        private static Dictionary<string, double> unigramDist;
+        private static List<Tuple<double, string>> ed;
+        private static List<double> nWeights;
+        private static List<Dictionary<string, double>> distributions;
+        
+        private static List<string> dictionary;
+        private static Model model;
 
-        public static List<Tuple<double, string>> EvaluateLikelihood(Queue<string> predicate, string currentWord, Model m)
+        private static void ComputeDistributions(Queue<string> predicate)
         {
-            List<Tuple<double, string>> values = new List<Tuple<double, string>>();
-            List<string> dictionary = m.GetDictionary();
-            //if(!m.HasKey(currentWord))
-            //  dictionary.Add(currentWord);
-            List<Tuple<double, string>> ed = EditDistance.ComputeEditDistances(dictionary, currentWord);
-            Dictionary<string, double> trigramDist = TrigramDistribution(m, dictionary, predicate);
-            Dictionary<string, double> bigramDist = BigramDistribution(m, dictionary, predicate);
-            Dictionary<string, double> unigramDist = UnigramDistribution(m, dictionary);
-            List<double> nWeights = new List<double>();
-            List<Dictionary<string, double>> distributions = new List<Dictionary<string, double>>();
+            trigramDist = TrigramDistribution(model, dictionary, predicate);
+            bigramDist = BigramDistribution(model, dictionary, predicate);
+            unigramDist = UnigramDistribution(model, dictionary);
+        }
+        private static void SetUpDistributionVector(Queue<string> predicate)
+        {
+            ComputeDistributions(predicate);
+            nWeights = new List<double>();
+            distributions = new List<Dictionary<string, double>>();
             if (trigramDist != null)
             {
                 nWeights.Add(trigramWeight);
@@ -38,13 +46,27 @@ namespace NLP
             }
             nWeights.Add(unigramWeight);
             distributions.Add(unigramDist);
+        }
+        private static double ComputeWeightedProbability(string word)
+        {
+            double value = 0;
+            for (int i = 0; i < nWeights.Count; i++)
+            {
+                value += nWeights[i] * distributions[i][word];
+            }
+            return value;
+        }
+        public static List<Tuple<double, string>> EvaluateLikelihood(Queue<string> predicate, string currentWord, Model m)
+        {
+            model = m; 
+            List<Tuple<double, string>> values = new List<Tuple<double, string>>();
+            dictionary = model.GetDictionary();
+            
+            ed = EditDistance.ComputeEditDistances(dictionary, currentWord);
+            SetUpDistributionVector(predicate);
             foreach (Tuple<double, string> t in ed)
             {
-                double value = 0;
-                for (int i = 0; i < nWeights.Count; i++)
-                {
-                    value += nWeights[i] * distributions[i][t.Item2];
-                }
+                double value = ComputeWeightedProbability(t.Item2);
                 value /= (t.Item1 * edWeight);
                 value *= scale;
                 values.Add(new Tuple<double, string>(value, t.Item2));
@@ -56,19 +78,19 @@ namespace NLP
             Writer.PrintEditDistance(values, ed, currentWord);
             return values;
         }
-        private static Dictionary<string, double> UnigramDistribution(Model m, List<string> dictionary)
+        private static Dictionary<string, double> UnigramDistribution(Model model, List<string> dictionary)
         {
             Dictionary<string, double> probabilityDistribution = new Dictionary<string, double>();
-            int events = m.GetEventCount();
+            int events = model.GetEventCount();
 
             foreach (string word in dictionary)
             {
-                int count = m.GetWordCount(word);
+                int count = model.GetWordCount(word);
                 probabilityDistribution.Add(word, count / (double)events);
             }
             return probabilityDistribution;
         }
-        private static Dictionary<string, double> BigramDistribution(Model m, List<string> dictionary, Queue<string> predicate)
+        private static Dictionary<string, double> BigramDistribution(Model model, List<string> dictionary, Queue<string> predicate)
         {
             if (predicate.Count >= 1)
             {
@@ -76,12 +98,12 @@ namespace NLP
                 {
                     predicate.Dequeue();
                 }
-                return LaplacianSmoothing(m.getGramFromChain(new Queue<string>(predicate.ToArray())), dictionary);
+                return LaplacianSmoothing(model.getGramFromChain(new Queue<string>(predicate.ToArray())), dictionary);
             }
             return null;
         }
 
-        private static Dictionary<string, double> TrigramDistribution(Model m, List<string> dictionary, Queue<string> predicate)
+        private static Dictionary<string, double> TrigramDistribution(Model model, List<string> dictionary, Queue<string> predicate)
         {
             if (predicate.Count >= 2)
             {
@@ -89,7 +111,7 @@ namespace NLP
                 {
                     predicate.Dequeue();
                 }
-                return LaplacianSmoothing(m.getGramFromChain(new Queue<string>(predicate.ToArray())), dictionary);
+                return LaplacianSmoothing(model.getGramFromChain(new Queue<string>(predicate.ToArray())), dictionary);
             }
             return null;
         }
@@ -106,18 +128,23 @@ namespace NLP
             }
             return probabilityDistribution;
         }
-        public static List<Tuple<double, string>> ExpectedWords(Gram pState, List<string> dictionary)
+        public static string PredictWord(Model m, Queue<string> evidence)
         {
-            List<Tuple<double, string>> probabilityDistribution = new List<Tuple<double, string>>();
-            int predicateFrequency = pState.getCount();
-            predicateFrequency += dictionary.Count;     // the plus one smoothing
-            foreach (string word in dictionary)
+            model = m;
+            dictionary = model.GetDictionary();
+            SetUpDistributionVector(evidence);
+            double bestScore = 0;
+            string bestWord = "";
+            foreach(string s in dictionary)
             {
-                int count = 1;                          // the plus one smoothing
-                count += pState.NextWordCount(word);
-                probabilityDistribution.Add(new Tuple<double, string>(count * 100 / (double)predicateFrequency, word));
+                double value = ComputeWeightedProbability(s);
+                if(value > bestScore)
+                {
+                    bestScore = value;
+                    bestWord = s;
+                }
             }
-            return probabilityDistribution;
+            return bestWord;
         }
     }
 

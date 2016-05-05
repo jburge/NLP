@@ -59,7 +59,14 @@ namespace NLP
             }
         }
 
-
+        public Gram this[string key]
+        {
+            get
+            {
+                Gram child = model[key];
+                return child;
+            }
+        }
         /// <summary>
         /// Takes event chain and recursively increments states that occur
         /// </summary>
