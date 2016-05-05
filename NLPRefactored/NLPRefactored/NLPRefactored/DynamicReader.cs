@@ -21,16 +21,16 @@ namespace NLPRefactored
         private static string wordBuffer = "";
 
         private static bool writingWord = false;
+        //need sentence term bool to wipe quee and buffer
 
-        private static ConsoleKeyInfo info;
         public static void InputLoop(Model model)
         {
-            Writer.SetCursor(0, topLine);
+            Writer.SetCursor(0, 5);
             while (true)
             {
                 currLoc = Writer.getCursorLoc();
                 Writer.PrintCursorInfo(currLoc, lastLoc);
-                info = Console.ReadKey();
+                ConsoleKeyInfo info = Console.ReadKey();
                 if (info.Key == ConsoleKey.Escape)
                 {
                     break;

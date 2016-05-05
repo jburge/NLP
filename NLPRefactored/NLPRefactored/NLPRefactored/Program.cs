@@ -13,6 +13,7 @@ using System.IO;
 // auto complete
 // mess with window settings
     // allow scrolling
+    // need to figure out buffers
 
 
 namespace NLPRefactored

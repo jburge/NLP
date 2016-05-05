@@ -6,33 +6,59 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.IO;
 
+
+//// THings to add
+// save model state
+// write into text file
+// auto complete
+// mess with window settings
+// allow scrolling
+// need to figure out buffers
+
+
 namespace NLP
 {
     class Program
     {
+
         static void Main(string[] args)
         {
-            Model model = RunModel();
-            Console.Clear();
+            SetUpWindow();
+            Model model = InitializeModel();
+            //TestEdit();
+            //model.DisplayModel();
             DynamicReader.InputLoop(model);
         }
-        public static Model RunModel()
+        static void GetInfo(Model model)
         {
-            Model myModel = new Model(3);
+            string temp = Console.ReadLine();
+            Console.WriteLine(model.GetWordCount(temp));
+        }
+        static void SetUpWindow()
+        {
+            Console.WindowWidth = Writer.windowW;
+            Console.WindowHeight = Writer.windowH;
+            Console.BufferHeight = Writer.windowH;
+            Console.BufferWidth = Writer.windowW;
+        }
+        static Model InitializeModel()
+        {
+            Model m = new Model(3);
             string txtFolderPath = "..\\..\\TextFiles\\";
             string[] files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
             foreach (string fileName in files)
             {
-                myModel.ReadInputCorpus(fileName);
+                m.TrainModel(fileName);
             }
-            return myModel;
+            Console.Clear();
+            return m;
         }
         public static void TestEdit()
         {
-            string w1 = "sunday";
-            string w2 = "saturday";
+            string w1 = Console.ReadLine();
+            string w2 = Console.ReadLine();
 
-            int d = EditDistance.ComputeEditDistanceDP(w1, w2);
+            double d = EditDistance.ComputeEditDistanceDP(w1, w2);
             Console.WriteLine(w1 + " , " + w2 + " : " + d);
         }
     }
