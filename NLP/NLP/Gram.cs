@@ -52,9 +52,23 @@ namespace NLP
         /// Returns all children (observed words from current state) ordered by count
         /// </summary>
         /// <returns></returns>
-        public List<Gram> getChildren()
+        public List<Gram> getChildrenGrams()
         {
             return new List<Gram>(children.Values.ToList().OrderBy(o => o.getCount()).ToList());
+        }
+        /// <summary>
+        /// Returns all strings from children grams
+        /// </summary>
+        /// <returns></returns>
+        public List<string> getChildren()
+        {
+            List<string> words = new List<string>();
+            foreach (Gram g in children.Values)
+            {
+                words.Add(g.getWord());
+            }
+            words.Sort();
+            return words;
         }
         public Gram getGram(Queue<string> chain)
         {
@@ -72,5 +86,21 @@ namespace NLP
         //////////////////////////////////
         public int getCount() { return count; }
         public string getWord() { return gram; }
+        public bool ContainsChild(string child)
+        {
+            return children.ContainsKey(child);
+        }
+        public Gram this[string key]
+        {
+            get
+            {
+                Gram child;
+                if (!this.children.TryGetValue(key, out child))
+                {
+                   children[key] = new Gram(key);
+                }
+                return child;
+            }
+        }
     }
 }

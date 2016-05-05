@@ -13,7 +13,7 @@ namespace NLP
     {
         int modelDepth;
         int eventCount;
-        Dictionary<string, Gram> model = new Dictionary<string, Gram>();
+        Gram model = new Gram("");
         public static string punctuation = ";,\\(\\)'\"\\*:";
         public static string terminators = ".!?";
         public static string wordBreak = " -_";
@@ -32,11 +32,11 @@ namespace NLP
         }
         public bool HasKey(string s) //checks if a word is in dictionary
         {
-            return model.ContainsKey(s);
+            return model.ContainsChild(s);
         }
         public List<string> GetDictionary()
         {
-            return model.Keys.ToList();
+            return model.getChildren();
         }
         public int GetEventCount()
         {
@@ -44,11 +44,11 @@ namespace NLP
         }
         public Gram getGramFromChain(Queue<string> chain)
         {
-            return model[chain.First()].getGram(chain);
+            return model.getGram(chain);
         }
         public int GetWordCount(string word)
         {
-            if (model.ContainsKey(word))
+            if (model.ContainsChild(word))
             {
                 return model[word].getCount();
             }
@@ -57,15 +57,7 @@ namespace NLP
                 return 0;
             }
         }
-        /// <summary>
-        /// Adds a new word to the dictionary
-        /// </summary>
-        /// <param name="word"></param>
-        public void AddWord(string word)
-        {
-            model[word] = new Gram(word);
-            eventCount++;
-        }
+
 
         /// <summary>
         /// Takes event chain and recursively increments states that occur
@@ -74,10 +66,7 @@ namespace NLP
         public void AddEvent(Queue<string> chain)
         {
             string firstWord = chain.Dequeue();
-            if (!model.ContainsKey(firstWord))
-            {
-                model.Add(firstWord, new Gram(firstWord));
-            }
+            Gram temp = model[firstWord];
             if (chain.Count > 0)
             {
                 model[firstWord].Add(chain);
@@ -203,7 +192,7 @@ namespace NLP
         }
         private void DisplayUnigrams()
         {
-            List<Gram> list = model.Values.ToList().OrderByDescending(o => o.getCount()).ToList();
+            List<Gram> list = model.getChildrenGrams();
             for (int i = 0; i < list.Count; i++)
             {
                 Console.WriteLine(list[i].getWord() + ": " + list[i].getCount());
@@ -211,10 +200,10 @@ namespace NLP
         }
         private void DisplayBigrams()
         {
-            List<Gram> list = model.Values.ToList().OrderByDescending(o => o.getCount()).ToList();
+            List<Gram> list = model.getChildrenGrams();
             for (int i = 0; i < list.Count; i++)
             {
-                List<Gram> bigramList = list[i].getChildren();
+                List<Gram> bigramList = list[i].getChildrenGrams();
                 for (int j = 0; j < bigramList.Count; j++)
                 {
                     Console.WriteLine("(" + list[i].getWord() + ", " + bigramList[j].getWord() + "): " + bigramList[j].getCount());
@@ -223,13 +212,13 @@ namespace NLP
         }
         private void DisplayTrigrams()
         {
-            List<Gram> list = model.Values.ToList().OrderByDescending(o => o.getCount()).ToList();
+            List<Gram> list = model.getChildrenGrams();
             for (int i = 0; i < list.Count; i++)
             {
-                List<Gram> bigramList = list[i].getChildren();
+                List<Gram> bigramList = list[i].getChildrenGrams();
                 for (int j = 0; j < bigramList.Count; j++)
                 {
-                    List<Gram> trigramList = bigramList[j].getChildren();
+                    List<Gram> trigramList = bigramList[j].getChildrenGrams();
                     for (int k = 0; k < trigramList.Count; k++)
                     {
                         Console.WriteLine("(" + list[i].getWord() + ", " + bigramList[j].getWord() + ", " + trigramList[k].getWord() + "): " + trigramList[k].getCount());
