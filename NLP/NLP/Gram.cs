@@ -72,10 +72,10 @@ namespace NLP
         }
         public Gram getGram(Queue<string> chain)
         {
-            chain.Dequeue();
             if (chain.Count > 0)
             {
-                return children[chain.First()].getGram(chain);
+                string first = chain.Dequeue();
+                return this[first].getGram(chain);
             }
             else
             {
@@ -98,9 +98,29 @@ namespace NLP
                 if (!this.children.TryGetValue(key, out child))
                 {
                    children[key] = new Gram(key);
+                   child = children[key];
                 }
                 return child;
             }
+        }
+        public string getMostLikelyNextWord()
+        {
+            string word = "";
+            int count = 0;
+            foreach (Gram g in children.Values)
+            {
+                if(g.getCount() > count)
+                {
+                    word = g.getWord();
+                    count = g.getCount();
+                }
+            }
+            if (word == "")
+            {
+                Console.WriteLine("ERROR, EMPTY STRING MOST LIKELY NEXT");
+                Console.WriteLine(gram);
+            }
+            return word;
         }
     }
 }

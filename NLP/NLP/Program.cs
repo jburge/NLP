@@ -27,7 +27,8 @@ namespace NLP
             Model model = InitializeModel();
             //TestEdit();
             //model.DisplayModel();
-            DynamicReader.InputLoop(model);
+            //DynamicReader.InputLoop(model);
+            TestModel(model);
         }
         static void GetInfo(Model model)
         {
@@ -52,6 +53,11 @@ namespace NLP
             }
             Console.Clear();
             return m;
+        }
+        static void TestModel(Model model)
+        {
+            ModelTestManager.InitializeManager(model, "..\\..\\TestFiles\\MansfieldPark.txt");
+            ModelTestManager.TestModel();
         }
         public static void TestEdit()
         {

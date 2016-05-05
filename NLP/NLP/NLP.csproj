@@ -46,6 +46,7 @@
     <Compile Include="EditDistance.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Gram.cs" />
+    <Compile Include="ModelTestManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Writer.cs" />
@@ -54,6 +55,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestFiles\MansfieldPark.txt" />
     <Content Include="TextFiles\Emma.txt" />
     <Content Include="Input.txt" />
     <Content Include="TextFiles\Persuation.txt" />

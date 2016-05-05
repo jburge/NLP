@@ -13,7 +13,7 @@ namespace NLP
     {
         int modelDepth;
         int eventCount;
-        Gram model = new Gram("");
+        Gram model;
         public static string punctuation = ";,\\(\\)'\"\\*:";
         public static string terminators = ".!?";
         public static string wordBreak = " -_";
@@ -21,6 +21,7 @@ namespace NLP
         public static string RegexTerminators = "[" + terminators + "]";
         public Model(int depth)
         {
+            model = new Gram("");
             modelDepth = depth;
             eventCount = 0;
         }
