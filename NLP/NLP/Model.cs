@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Text.RegularExpressions;
 
+//remove [] and tabs
+//see end of file as a terminator
 
 namespace NLP
 {
