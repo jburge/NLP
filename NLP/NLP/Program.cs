@@ -25,15 +25,15 @@ namespace NLP
         static void Main(string[] args)
         {
             Debugger.InitializeLog();
-            EditAttempt();
+            //EditAttempt();
             SetUpWindow();
             //Model model = InitializeModel();
             //TestEdit();
             //model.DisplayModel();
             //DynamicReader.InputLoop(model);
-            //TestModel();
-            CountWords();
-            Debugger.WriteLog();
+            TestModel();
+            //CountWords();
+            //Debugger.WriteLog();
         }
         static void GetInfo(Model model)
         {
@@ -61,15 +61,23 @@ namespace NLP
         }
         static void TestModel()
         {
+            author = "Austen";
             Debugger.Log(String.Format("Model Trained on {0}", author));
             string txtFolderPath = "..\\..\\TextFiles\\TestCorpus\\";
             string[] files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
-            for(int i = 1; i < files.Count(); i++)
+            for(int i = 3; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
                 mtm.TestModel();
             }
             author = "Dickens";
+            Debugger.Log(String.Format("Model Trained on {0}", author));
+            for (int i = 3; i < files.Count(); i++)
+            {
+                ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
+                mtm.TestModel();
+            }
+            author = "Twain";
             Debugger.Log(String.Format("Model Trained on {0}", author));
             for (int i = 0; i < files.Count(); i++)
             {
