@@ -74,6 +74,11 @@
     <Content Include="TextFiles\TrainingCorpus\Austen\MansfieldPark.txt" />
     <Content Include="Input.txt" />
     <Content Include="TextFiles\TrainingCorpus\Shakespeare\TheMerchantOfVenice.txt" />
+    <Content Include="TextFiles\TrainingCorpus\Twain\HuckleberryFinn.txt" />
+    <Content Include="TextFiles\TrainingCorpus\Twain\TheConnecticutYankee.txt" />
+    <Content Include="TextFiles\TrainingCorpus\Twain\TheInnocentsAbroad.txt" />
+    <Content Include="TextFiles\TrainingCorpus\Twain\ThePrinceAndThePauper.txt" />
+    <Content Include="TextFiles\TrainingCorpus\Twain\TomSawyer.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -25,14 +25,14 @@ namespace NLP
         static void Main(string[] args)
         {
             Debugger.InitializeLog();
-            //EditAttempt();
+            EditAttempt();
             SetUpWindow();
             //Model model = InitializeModel();
             //TestEdit();
             //model.DisplayModel();
             //DynamicReader.InputLoop(model);
-            TestModel();
-            //CountWords();
+            //TestModel();
+            CountWords();
             Debugger.WriteLog();
         }
         static void GetInfo(Model model)
@@ -87,28 +87,23 @@ namespace NLP
         }
         public static void EditAttempt()
         {
-            string author = "Shakespeare";
+            string author = "Twain";
             string txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\" + author + "\\";
             string[] files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
-            int min = Int32.MaxValue;
             foreach (string file in files)
             {
-                int count = 0;
                 Console.WriteLine(file);
-                string[] lines = System.IO.File.ReadAllLines(file);
                 string content = "";
+                string[] lines = System.IO.File.ReadAllLines(file);
                 for (int i = 0; i < lines.Count(); i++)
                 {
                     if (lines[i] == "")
                         content += "\n";
-                    else if (lines[i] == lines[i].ToUpper())
-                        content += lines[i] + "~ ";
                     else if (lines[i][lines[i].Length - 1] != ' ')
                         content += lines[i] + " ";
                     else if (lines[i][lines[i].Length - 1] == ' ')
                         content += lines[i];
                 }
-                Debugger.Log(String.Format("{0}: {1} words", file, count));
                 System.IO.File.WriteAllText(file, content);
             }
         }
@@ -116,19 +111,19 @@ namespace NLP
         {
             string txtFolderPath;
             string[] files;
-            //List<string> authors = new List<string>{"Shakespeare", "Austen", "Dickens"};
-            //Debugger.Log("Training Corpus:");
-            //for (int a = 0; a < authors.Count; a++)
-            //{
-            //    txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\" + authors[a] + "\\";
-            //    files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
-            //    foreach (string file in files)
-            //    {
-            //        Console.WriteLine(file);
-            //        int phrases = RegexLogic.GetPhrasesFromFile(file).Count();
-            //        Debugger.Log(String.Format("{0}: {1} words", file, phrases));
-            //    }
-            //}
+            List<string> authors = new List<string> { "Shakespeare", "Austen", "Dickens", "Twain" };
+            Debugger.Log("Training Corpus:");
+            for (int a = 0; a < authors.Count; a++)
+            {
+                txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\" + authors[a] + "\\";
+                files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
+                foreach (string file in files)
+                {
+                    Console.WriteLine(file);
+                    int phrases = RegexLogic.GetPhrasesFromFile(file).Count();
+                    Debugger.Log(String.Format("{0}: {1} words", file, phrases));
+                }
+            }
             txtFolderPath = "..\\..\\TextFiles\\TestCorpus\\";
             files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
             Debugger.Log("Test Corpus:");
@@ -137,12 +132,6 @@ namespace NLP
                 Console.WriteLine(files[i]);
                 string[] phrases = RegexLogic.GetPhrasesFromFile(files[i]);
                 Debugger.Log(String.Format("{0}: {1} words", files[i], phrases.Count()));
-                for (int j = 0; j < phrases.Count(); j++)
-                {
-                    Debugger.Log(phrases[j]);
-                    if (phrases[j] == "")
-                        Console.WriteLine("EMPTY PHRASE");
-                }
             }
         }
     }
