@@ -10,27 +10,29 @@ namespace NLP
     /// <summary>
     /// This class will score a models ability to predict the next for of a test corpus
     /// </summary>
-    public static class ModelTestManager
+    public class ModelTestManager
     {
         private static Model model;
         private static string testFilePath;
         private static int events;
         private static int correctPredictions;
+        private static int fake;
 
-        public static void InitializeManager(Model _model, string filePath)
+        public ModelTestManager(Model _model, string filePath)
         {
             model = _model;
             testFilePath = filePath;
             events = 0;
             correctPredictions = 0;
+            fake = 0;
         }
-        private static string PredictWord(Queue<string> evidence, string word)
+        private string PredictWord(Queue<string> evidence, string word)
         {
             string predicted = Analysis.PredictWord(model, new Queue<string>(evidence.ToArray()));
             UpdateModel(evidence, word);
             return predicted;
         }
-        private static void UpdateModel(Queue<string> evidence, string word)
+        private void UpdateModel(Queue<string> evidence, string word)
         {
             while (evidence.Count > 0)
             {
@@ -40,49 +42,45 @@ namespace NLP
             }
             model[word].Increment();
         }
-        public static Tuple<int, int> TestModel()
+        public Tuple<int, int> TestModel()
         {
             Console.WriteLine(String.Format("Beginning test using {0}", testFilePath));
             Queue<string> evidence = new Queue<string>();
             //string[] lines = System.IO.File.ReadAllLines("../../" + fileName);
-            int count = 0;
-            string[] lines = System.IO.File.ReadAllLines(testFilePath);
-            for (int i = 0; i < lines.Count() && count < 1000; i++)
+            string[] phrases = RegexLogic.GetPhrasesFromFile(testFilePath);
+            Console.WriteLine(String.Format("{0} words", phrases.Count()));
+            for (int i = 0; i < phrases.Count(); i++)
             {
-                count++;
-                Writer.SetCursor(0,2);
-                Writer.ClearLine();
-                Console.WriteLine(count);
-                //Console.WriteLine(lines[i]);
-                string stripped = Regex.Replace(lines[i], Model.RegexCharRemoval, "");
-                //Console.WriteLine(stripped);
-                string[] phrases = stripped.Split(' ', '-', '_');
-                for (int j = 0; j < phrases.Count(); j++)
+                //Writer.SetCursor(0, Console.CursorTop);
+                //Writer.ClearLine();
+                //Console.Write(events + "\t" + fake);
+                string phrase = phrases[i];
+                string word = phrase.ToLower();
+                if (!Model.exceptionList.Contains(word))
+                    word = Regex.Replace(word, "[\\.\\?\\!;~]", "").ToLower();
+                if (word == "")
                 {
-                    //Console.WriteLine(phrases[j]);
-                    string word = phrases[j].ToLower();
-                    //Console.WriteLine(word);
-                    string check = Regex.Replace(word, Model.RegexTerminators, "");
-                    if (check == "")
-                        break;
-                    //Console.WriteLine(check);
-                    string prediction = PredictWord(new Queue<string>(evidence.ToArray()), check);
-                    events++;
-                    if (prediction == check)
-                        correctPredictions++;
-                    evidence.Enqueue(check);
-                    if (evidence.Count >= model.getModelDepth())
-                        evidence.Dequeue();
-                    bool terminator = (check != word);
-                    if (terminator)
-                    {
-                        evidence.Clear();
-                    }
+                    fake++;
+                    continue;
+                }
+                //Console.WriteLine(check);
+                string prediction = PredictWord(new Queue<string>(evidence.ToArray()), word);
+                events++;
+                //Debugger.Log(word);
+                if (prediction == word)
+                    correctPredictions++;
+                evidence.Enqueue(word);
+                if (evidence.Count >= model.getModelDepth())
+                    evidence.Dequeue();
+                bool terminator = (phrase != word);
+                if (terminator)
+                {
+                    evidence.Clear();
                 }
             }
-            Console.WriteLine("Trained on file " + testFilePath);
-            Console.WriteLine("Scored {0} of {1}", correctPredictions, events);
-
+            Console.WriteLine();
+            Debugger.Log(String.Format("{0}:\n\tevents: {1}\n\tcorrect: {2}", testFilePath, events, correctPredictions));
+            Debugger.Log(String.Format("Fake:{0}", fake));
             return new Tuple<int, int>(correctPredictions, events);
         }
 

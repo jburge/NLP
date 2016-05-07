@@ -21,6 +21,8 @@ namespace NLP
         public static string wordBreak = " -_";
         public static string RegexCharRemoval = "[^a-zA-Z0-9\\.\\?\\!;\' ]";
         public static string RegexTerminators = "[" + terminators + "]";
+        public static List<string> exceptionList = new List<string> { "mr.", "mrs.", "dr." };
+
         public Model(int depth)
         {
             model = new Gram("");
@@ -121,7 +123,6 @@ namespace NLP
 
         // want to keep 0-9, a-z, A-Z, '.', '?', '!', ';', '''
         // [^a-zA-Z0-9\.\?\!;' ]
-        private List<string> exceptionList = new List<string> { "mr.", "mrs.", "dr." };
         /// <summary>
         /// Trains model off static corpus
         /// </summary>
@@ -131,17 +132,7 @@ namespace NLP
             Queue<string> chain = new Queue<string>();
             //string[] lines = System.IO.File.ReadAllLines("../../" + fileName);
 
-            string fileContents = System.IO.File.ReadAllText(fileName);
-            fileContents = Regex.Replace(fileContents, "[^a-zA-Z0-9\\.\\?\\!;\'~\\-_ ]", "");
-            
-            fileContents = Regex.Replace(fileContents, "[\\-_]", " ");
-            // put one space where there is any whitespace
-            fileContents = Regex.Replace(fileContents, @"\s+", " ");
-            // next two lines remove single quotes but seek to allow apostrophes
-            // fails on (boys') case
-            fileContents = Regex.Replace(fileContents, "(?<![a-z])'", "");
-            fileContents = Regex.Replace(fileContents, "'(?![a-z])", "");
-            string[] phrases = fileContents.Split(' ');
+            string[] phrases = RegexLogic.GetPhrasesFromFile(fileName);
             for (int i = 0; i < phrases.Count(); i++)
             {
                 string phrase = phrases[i];
@@ -150,8 +141,8 @@ namespace NLP
                     word = Regex.Replace(word, "[\\.\\?\\!;~]", "").ToLower();
                 if (word == "")
                     break;
-                if (word.Contains('\'') && !(phrase.Substring(0, 1) == phrase.Substring(0, 1).ToUpper() && phrase.Substring(phrase.Length - 2, 2) == "'s"))
-                    Debugger.Log(String.Format("{0}: {1} ({2})",Regex.Split(fileName, "\\\\").Last(), word, i+1));
+                //if (word.Contains('\'') && !(phrase.Substring(0, 1) == phrase.Substring(0, 1).ToUpper() && phrase.Substring(phrase.Length - 2, 2) == "'s"))
+                //    Debugger.Log(String.Format("{0}: {1} ({2})",Regex.Split(fileName, "\\\\").Last(), word, i+1));
                 //Console.WriteLine(check);
                 bool terminator = (phrase != word);
                 ObserveEvent(chain, word);
