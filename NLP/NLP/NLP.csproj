@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="log.txt" />
-    <Content Include="TextFiles\TrainingCorpus\Dickens\ATaleOfTwoCities.txt" />
+    <Content Include="TextFiles\TestCorpus\ATaleOfTwoCities.txt" />
     <Content Include="TextFiles\TrainingCorpus\Dickens\BleakHouse.txt" />
     <Content Include="TextFiles\TrainingCorpus\Austen\Emma.txt" />
     <Content Include="TextFiles\TrainingCorpus\Dickens\GreatExpectations.txt" />
@@ -65,17 +65,16 @@
     <Content Include="TextFiles\TrainingCorpus\Dickens\LittleDorrit.txt" />
     <Content Include="TextFiles\TrainingCorpus\Shakespeare\MacBeth.txt" />
     <Content Include="TextFiles\TrainingCorpus\Dickens\OliverTwist.txt" />
-    <Content Include="TextFiles\TrainingCorpus\Austen\Persuation.txt" />
+    <Content Include="TextFiles\TestCorpus\Persuation.txt" />
     <Content Include="TextFiles\TrainingCorpus\Austen\PrideAndPrejudice.txt" />
+    <Content Include="TextFiles\TrainingCorpus\Shakespeare\Othello.txt" />
     <Content Include="TextFiles\TrainingCorpus\Shakespeare\RomioAndJuliet.txt" />
     <Content Include="TextFiles\TrainingCorpus\Austen\SenseAndSensibility.txt" />
     <Content Include="TextFiles\TrainingCorpus\Austen\MansfieldPark.txt" />
     <Content Include="Input.txt" />
     <Content Include="TextFiles\TrainingCorpus\Shakespeare\TheMerchantOfVenice.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TextFiles\TestCorpus\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

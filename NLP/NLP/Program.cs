@@ -26,7 +26,7 @@ namespace NLP
             Debugger.InitializeLog();
             EditAttempt();
             SetUpWindow();
-            Model model = InitializeModel();
+            //Model model = InitializeModel();
             //TestEdit();
             //model.DisplayModel();
             //DynamicReader.InputLoop(model);
@@ -48,7 +48,8 @@ namespace NLP
         static Model InitializeModel()
         {
             Model m = new Model(3);
-            string txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\Dickens\\";
+            string author = "Austen";
+            string txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\"+author+"\\";
             string[] files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
             foreach (string fileName in files)
             {
@@ -72,15 +73,20 @@ namespace NLP
         }
         public static void EditAttempt()
         {
-            string txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\Dickens\\";
+            string author = "Shakespeare";
+            string txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\" + author + "\\";
             string[] files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
+            int min = Int32.MaxValue;
             foreach (string file in files)
             {
+                int count = 0;
                 Console.WriteLine(file);
                 string[] lines = System.IO.File.ReadAllLines(file);
                 string content = "";
                 for (int i = 0; i < lines.Count(); i++)
                 {
+                    count += lines[i].Split(' ').Count();
+                    continue;
                     if (lines[i] == "")
                         content += "\n";
                     else if (lines[i] == lines[i].ToUpper())
@@ -90,7 +96,8 @@ namespace NLP
                     else if (lines[i][lines[i].Length - 1] == ' ')
                         content += lines[i];
                 }
-                System.IO.File.WriteAllText(file, content);
+                Debugger.Log(String.Format("{0}: {1} words", file, count));
+                //System.IO.File.WriteAllText(file, content);
             }
         }
     }
