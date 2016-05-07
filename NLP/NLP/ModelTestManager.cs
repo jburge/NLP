@@ -54,7 +54,7 @@ namespace NLP
                 Writer.ClearLine();
                 Console.WriteLine(count);
                 //Console.WriteLine(lines[i]);
-                string stripped = Regex.Replace(lines[i], Model.RegexPunctuation, "");
+                string stripped = Regex.Replace(lines[i], Model.RegexCharRemoval, "");
                 //Console.WriteLine(stripped);
                 string[] phrases = stripped.Split(' ', '-', '_');
                 for (int j = 0; j < phrases.Count(); j++)
@@ -81,7 +81,7 @@ namespace NLP
                 }
             }
             Console.WriteLine("Trained on file " + testFilePath);
-            Console.WriteLine("Scored {0}", correctPredictions / (double) events);
+            Console.WriteLine("Scored {0} of {1}", correctPredictions, events);
 
             return new Tuple<int, int>(correctPredictions, events);
         }

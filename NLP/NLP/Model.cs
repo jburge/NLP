@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 //remove [] and tabs
 //see end of file as a terminator
 
+
 namespace NLP
 {
     public class Model
@@ -16,10 +17,9 @@ namespace NLP
         int modelDepth;
         int eventCount;
         Gram model;
-        public static string punctuation = ";,\\(\\)'\"\\*:";
         public static string terminators = ".!?";
         public static string wordBreak = " -_";
-        public static string RegexPunctuation = "[" + punctuation + "]";
+        public static string RegexCharRemoval = "[^a-zA-Z0-9\\.\\?\\!;\' ]";
         public static string RegexTerminators = "[" + terminators + "]";
         public Model(int depth)
         {
@@ -119,8 +119,9 @@ namespace NLP
             return chain;
         }
 
-
-
+        // want to keep 0-9, a-z, A-Z, '.', '?', '!', ';', '''
+        // [^a-zA-Z0-9\.\?\!;' ]
+        private List<string> exceptionList = new List<string> { "mr.", "mrs.", "dr." };
         /// <summary>
         /// Trains model off static corpus
         /// </summary>
@@ -130,30 +131,36 @@ namespace NLP
             Queue<string> chain = new Queue<string>();
             //string[] lines = System.IO.File.ReadAllLines("../../" + fileName);
 
-            string[] lines = System.IO.File.ReadAllLines(fileName);
-            for (int i = 0; i < lines.Count(); i++)
+            string fileContents = System.IO.File.ReadAllText(fileName);
+            fileContents = Regex.Replace(fileContents, "[^a-zA-Z0-9\\.\\?\\!;\'~\\-_ ]", "");
+            
+            fileContents = Regex.Replace(fileContents, "[\\-_]", " ");
+            // put one space where there is any whitespace
+            fileContents = Regex.Replace(fileContents, @"\s+", " ");
+            // next two lines remove single quotes but seek to allow apostrophes
+            // fails on (boys') case
+            fileContents = Regex.Replace(fileContents, "(?<![a-z])'", "");
+            fileContents = Regex.Replace(fileContents, "'(?![a-z])", "");
+            string[] phrases = fileContents.Split(' ');
+            for (int i = 0; i < phrases.Count(); i++)
             {
-                //Console.WriteLine(lines[i]);
-                string stripped = Regex.Replace(lines[i], RegexPunctuation, "");
-                //Console.WriteLine(stripped);
-                string[] phrases = stripped.Split(' ', '-', '_');
-                for (int j = 0; j < phrases.Count(); j++)
+                string phrase = phrases[i];
+                string word = phrase.ToLower();
+                if(!exceptionList.Contains(word))
+                    word = Regex.Replace(word, "[\\.\\?\\!;~]", "").ToLower();
+                if (word == "")
+                    break;
+                if (word.Contains('\'') && !(phrase.Substring(0, 1) == phrase.Substring(0, 1).ToUpper() && phrase.Substring(phrase.Length - 2, 2) == "'s"))
+                    Debugger.Log(String.Format("{0}: {1} ({2})",Regex.Split(fileName, "\\\\").Last(), word, i+1));
+                //Console.WriteLine(check);
+                bool terminator = (phrase != word);
+                ObserveEvent(chain, word);
+                if (terminator)
                 {
-                    //Console.WriteLine(phrases[j]);
-                    string word = phrases[j].ToLower();
-                    //Console.WriteLine(word);
-                    string check = Regex.Replace(word, RegexTerminators, "");
-                    if (check == "")
-                        break;
-                    //Console.WriteLine(check);
-                    bool terminator = (check != word);
-                    ObserveEvent(chain, check);
-                    if (terminator)
-                    {
-                        chain.Dequeue();
-                        chain = ChainPush(chain);
-                    }
+                    chain.Dequeue();
+                    chain = ChainPush(chain);
                 }
+              
             }
             Console.WriteLine("Trained on file " + fileName);
         }

@@ -23,12 +23,15 @@ namespace NLP
 
         static void Main(string[] args)
         {
+            Debugger.InitializeLog();
+            EditAttempt();
             SetUpWindow();
             Model model = InitializeModel();
             //TestEdit();
             //model.DisplayModel();
             //DynamicReader.InputLoop(model);
-            TestModel(model);
+            //TestModel(model);
+            Debugger.WriteLog();
         }
         static void GetInfo(Model model)
         {
@@ -45,18 +48,18 @@ namespace NLP
         static Model InitializeModel()
         {
             Model m = new Model(3);
-            string txtFolderPath = "..\\..\\TextFiles\\";
+            string txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\Dickens\\";
             string[] files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
             foreach (string fileName in files)
             {
                 m.TrainModel(fileName);
             }
-            Console.Clear();
+            //Console.Clear();
             return m;
         }
         static void TestModel(Model model)
         {
-            ModelTestManager.InitializeManager(model, "..\\..\\TestFiles\\MansfieldPark.txt");
+            ModelTestManager.InitializeManager(model, "..\\..\\TextFiles\\TestFiles\\MansfieldPark.txt");
             ModelTestManager.TestModel();
         }
         public static void TestEdit()
@@ -66,6 +69,29 @@ namespace NLP
 
             double d = EditDistance.ComputeEditDistanceDP(w1, w2);
             Console.WriteLine(w1 + " , " + w2 + " : " + d);
+        }
+        public static void EditAttempt()
+        {
+            string txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\Dickens\\";
+            string[] files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
+            foreach (string file in files)
+            {
+                Console.WriteLine(file);
+                string[] lines = System.IO.File.ReadAllLines(file);
+                string content = "";
+                for (int i = 0; i < lines.Count(); i++)
+                {
+                    if (lines[i] == "")
+                        content += "\n";
+                    else if (lines[i] == lines[i].ToUpper())
+                        content += lines[i] + "~ ";
+                    else if (lines[i][lines[i].Length - 1] != ' ')
+                        content += lines[i] + " ";
+                    else if (lines[i][lines[i].Length - 1] == ' ')
+                        content += lines[i];
+                }
+                System.IO.File.WriteAllText(file, content);
+            }
         }
     }
 }
