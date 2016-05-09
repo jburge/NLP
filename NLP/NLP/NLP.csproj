@@ -62,25 +62,22 @@
     <Content Include="TextFiles\TrainingCorpus\Dickens\BleakHouse.txt" />
     <Content Include="TextFiles\TrainingCorpus\Austen\Emma.txt" />
     <Content Include="TextFiles\TrainingCorpus\Dickens\GreatExpectations.txt" />
-    <Content Include="TextFiles\TrainingCorpus\Shakespeare\Hamlet.txt" />
     <Content Include="TextFiles\TrainingCorpus\Dickens\LittleDorrit.txt" />
-    <Content Include="TextFiles\TestCorpus\MacBeth.txt" />
     <Content Include="TextFiles\TrainingCorpus\Dickens\OliverTwist.txt" />
     <Content Include="TextFiles\TestCorpus\Persuation.txt" />
     <Content Include="TextFiles\TrainingCorpus\Austen\PrideAndPrejudice.txt" />
-    <Content Include="TextFiles\TrainingCorpus\Shakespeare\Othello.txt" />
-    <Content Include="TextFiles\TrainingCorpus\Shakespeare\RomioAndJuliet.txt" />
     <Content Include="TextFiles\TrainingCorpus\Austen\SenseAndSensibility.txt" />
     <Content Include="TextFiles\TrainingCorpus\Austen\MansfieldPark.txt" />
     <Content Include="Input.txt" />
-    <Content Include="TextFiles\TrainingCorpus\Shakespeare\TheMerchantOfVenice.txt" />
     <Content Include="TextFiles\TrainingCorpus\Twain\HuckleberryFinn.txt" />
     <Content Include="TextFiles\TrainingCorpus\Twain\TheConnecticutYankee.txt" />
     <Content Include="TextFiles\TrainingCorpus\Twain\TheInnocentsAbroad.txt" />
     <Content Include="TextFiles\TestCorpus\ThePrinceAndThePauper.txt" />
     <Content Include="TextFiles\TrainingCorpus\Twain\TomSawyer.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TestResults\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

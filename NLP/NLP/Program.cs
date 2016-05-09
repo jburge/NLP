@@ -31,9 +31,9 @@ namespace NLP
             //TestEdit();
             //model.DisplayModel();
             //DynamicReader.InputLoop(model);
-            TestModel();
+            TestModelPrediction();
             //CountWords();
-            //Debugger.WriteLog();
+            Debugger.WriteLog();
         }
         static void GetInfo(Model model)
         {
@@ -49,7 +49,7 @@ namespace NLP
         }
         static Model InitializeModel()
         {
-            Model m = new Model(depth);
+            Model m = new Model(depth, author);
             string txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\"+author+"\\";
             string[] files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
             foreach (string fileName in files)
@@ -59,30 +59,30 @@ namespace NLP
             //Console.Clear();
             return m;
         }
-        static void TestModel()
+        static void TestModelPrediction()
         {
             author = "Austen";
             Debugger.Log(String.Format("Model Trained on {0}", author));
             string txtFolderPath = "..\\..\\TextFiles\\TestCorpus\\";
             string[] files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
-            for(int i = 3; i < files.Count(); i++)
+            for(int i = 0; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
-                mtm.TestModel();
+                mtm.TestModelPrediction();
             }
             author = "Dickens";
             Debugger.Log(String.Format("Model Trained on {0}", author));
-            for (int i = 3; i < files.Count(); i++)
+            for (int i = 0; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
-                mtm.TestModel();
+                mtm.TestModelPrediction();
             }
             author = "Twain";
             Debugger.Log(String.Format("Model Trained on {0}", author));
             for (int i = 0; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
-                mtm.TestModel();
+                mtm.TestModelPrediction();
             }
         }
         public static void TestEdit()

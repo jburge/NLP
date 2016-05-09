@@ -1,0 +1,85 @@
+MODEL DATA
+private static double unigramWeight = .01;
+private static double bigramWeight = .645;
+private static double trigramWeight = .345;
+
+Austen Model
+->A Tale of Two Cities
+	12860 / 137156 = 9.3762%
+->Persuation
+	9818 / 83657 = 11.7360%
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
+	events: 70092
+	correct: 6835
+Fake:118
+
+Dickens Model
+->A Tale of Two Cities
+	11130 / 137156 = 8.1148%
+->Persuation
+	7357 / 83657 = 8.7942%
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
+	events: 70092
+	correct: 5904
+Fake:118
+
+
+Model Trained on Twain
+..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
+	events: 137156
+	correct: 10115
+Fake:13
+..\..\TextFiles\TestCorpus\Persuation.txt:
+	events: 83657
+	correct: 6977
+Fake:4
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
+	events: 70092
+	correct: 5732
+Fake:118
+
+
+private static double unigramWeight = .01;
+private static double bigramWeight = .495;
+private static double trigramWeight = .495;
+Model Trained on Austen
+..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
+	events: 137156
+	correct: 12588
+	fake: 13
+..\..\TextFiles\TestCorpus\Persuation.txt:
+	events: 83657
+	correct: 9724
+	fake: 4
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
+	events: 70092
+	correct: 6788
+	fake: 118
+
+Model Trained on Dickens
+..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
+	events: 137156
+	correct: 10726
+	fake: 13
+..\..\TextFiles\TestCorpus\Persuation.txt:
+	events: 83657
+	correct: 7054
+	fake: 4
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
+	events: 70092
+	correct: 5719
+	fake: 118
+	
+Model Trained on Twain
+..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
+	events: 137156
+	correct: 9772
+	fake: 13
+..\..\TextFiles\TestCorpus\Persuation.txt:
+	events: 83657
+	correct: 6663
+	fake: 4
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
+	events: 70092
+	correct: 5505
+	fake: 118

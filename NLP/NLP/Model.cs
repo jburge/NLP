@@ -17,17 +17,19 @@ namespace NLP
         int modelDepth;
         int eventCount;
         Gram model;
+        string author = "";
         public static string terminators = ".!?";
         public static string wordBreak = " -_";
         public static string RegexCharRemoval = "[^a-zA-Z0-9\\.\\?\\!;\' ]";
         public static string RegexTerminators = "[" + terminators + "]";
         public static List<string> exceptionList = new List<string> { "mr.", "mrs.", "dr." };
 
-        public Model(int depth)
+        public Model(int depth, string _author)
         {
             model = new Gram("");
             modelDepth = depth;
             eventCount = 0;
+            author = _author;
         }
 
         ///// Simple Utility Functions
@@ -62,7 +64,7 @@ namespace NLP
                 return 0;
             }
         }
-
+        public string getAuthor() { return author; }
         public Gram this[string key]
         {
             get

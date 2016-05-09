@@ -42,18 +42,14 @@ namespace NLP
             }
             model[word].Increment();
         }
-        public Tuple<int, int> TestModel()
+        public Tuple<int, int> TestModelPrediction()
         {
-            Console.WriteLine(String.Format("Beginning test using {0}", testFilePath));
+            Debugger.StartTest(model, testFilePath.Split('\\').Last());
             Queue<string> evidence = new Queue<string>();
             //string[] lines = System.IO.File.ReadAllLines("../../" + fileName);
             string[] phrases = RegexLogic.GetPhrasesFromFile(testFilePath);
-            Console.WriteLine(String.Format("{0} words", phrases.Count()));
             for (int i = 0; i < phrases.Count(); i++)
             {
-                //Writer.SetCursor(0, Console.CursorTop);
-                //Writer.ClearLine();
-                //Console.Write(events + "\t" + fake);
                 string phrase = phrases[i];
                 string word = phrase.ToLower();
                 if (!Model.exceptionList.Contains(word))
@@ -63,12 +59,13 @@ namespace NLP
                     fake++;
                     continue;
                 }
-                //Console.WriteLine(check);
                 string prediction = PredictWord(new Queue<string>(evidence.ToArray()), word);
                 events++;
-                //Debugger.Log(word);
                 if (prediction == word)
+                {
                     correctPredictions++;
+                    Debugger.LogMatch(model, testFilePath.Split('\\').Last(), word);
+                }
                 evidence.Enqueue(word);
                 if (evidence.Count >= model.getModelDepth())
                     evidence.Dequeue();
@@ -79,8 +76,8 @@ namespace NLP
                 }
             }
             Console.WriteLine();
-            Debugger.Log(String.Format("{0}:\n\tevents: {1}\n\tcorrect: {2}", testFilePath, events, correctPredictions));
-            Debugger.Log(String.Format("Fake:{0}", fake));
+            Debugger.Log(String.Format("{0}:\n\tevents: {1}\n\tcorrect: {2}\n\tfake: {3}", testFilePath, events, correctPredictions, fake));
+            Debugger.FinishTest(model, testFilePath.Split('\\').Last());
             return new Tuple<int, int>(correctPredictions, events);
         }
 
