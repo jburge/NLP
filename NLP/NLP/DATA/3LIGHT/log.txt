@@ -1,39 +1,39 @@
 Model Trained on Austen
 ..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
 	events: 137156
-	correct: 8143
+	correct: 12860
 	fake: 13
 ..\..\TextFiles\TestCorpus\Persuation.txt:
 	events: 83657
-	correct: 4071
+	correct: 9818
 	fake: 4
 ..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
 	events: 70092
-	correct: 4660
+	correct: 6835
 	fake: 118
 Model Trained on Dickens
 ..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
 	events: 137156
-	correct: 8025
+	correct: 11130
 	fake: 13
 ..\..\TextFiles\TestCorpus\Persuation.txt:
 	events: 83657
-	correct: 3329
+	correct: 7357
 	fake: 4
 ..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
 	events: 70092
-	correct: 4197
+	correct: 5904
 	fake: 118
 Model Trained on Twain
 ..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
 	events: 137156
-	correct: 8025
+	correct: 10115
 	fake: 13
 ..\..\TextFiles\TestCorpus\Persuation.txt:
 	events: 83657
-	correct: 3329
+	correct: 6977
 	fake: 4
 ..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
 	events: 70092
-	correct: 4216
+	correct: 5732
 	fake: 118
