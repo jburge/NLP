@@ -80,7 +80,38 @@ namespace NLP
             Debugger.FinishTest(model, testFilePath.Split('\\').Last());
             return new Tuple<int, int>(correctPredictions, events);
         }
-
+	public double TestModelValuation()
+	{
+		Debugger.StartTest(model, testFilePath.Split('\\').Last());
+		Queue <string> evidence = new Queue <string> ();
+		string[] phrases = Regex.GetPhrasesFromFile(testFilePath);
+		double scoreSum = 0;
+		for (int i = 0; i < phrases.Count(); i++)
+		{
+			string phrase = phrases[i];
+			string word = phrase.ToLower();
+			if (!Model.exceptionList.Contains(word))
+				word = Regex.Replace(word, "[\\.\\?\\!;~", "").ToLower();
+			if(word =="")
+			{
+				fake++;
+				continue;
+			}
+			double modelEvaluation = EvaluateWord(new Queue<string>(evidence.ToArray()), word);
+			events++;
+			scoreSum += modelEvaluation;
+			evidence.Enqueue(word);
+			if(evidence.Count >= model.getModelDepth())
+				evidence.Dequeue();
+			bool terminator = (phrase != word);
+			if(terminator)
+				evidence.Clear();
+		}
+		double modelScore = scoreSum / (double)events;
+		Debugger.Log(String.Format("{0}: {1}", testFilePath, modelScore));
+		Debugger.FinishTest(model, testFilePath.Split('\\').Last());
+		return modelScore;
+	}
 
     }
 }
