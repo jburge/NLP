@@ -10,9 +10,9 @@ namespace NLP
     {
         private static double scale = 100;
         private static double edWeight = 10;
-        private static double unigramWeight = .01;
-        private static double bigramWeight = .345;
-        private static double trigramWeight = .645;
+        private static double unigramWeight = .33;
+        private static double bigramWeight = .34;
+        private static double trigramWeight = .33;
         private static Dictionary<string, double> trigramDist;
         private static Dictionary<string, double> bigramDist;
         private static Dictionary<string, double> unigramDist;
