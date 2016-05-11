@@ -32,8 +32,8 @@ namespace NLP
             //TestEdit();
             //model.DisplayModel();
             //DynamicReader.InputLoop(model);
-            //TestModel();
-            CountWords();
+            TestModel();
+            //CountWords();
             Debugger.WriteLog();
         }
         static void GetInfo(Model model)

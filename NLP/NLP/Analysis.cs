@@ -11,8 +11,8 @@ namespace NLP
         private static double scale = 100;
         private static double edWeight = 10;
         private static double unigramWeight = .01;
-        private static double bigramWeight = .01;
-        private static double trigramWeight = .98;
+        private static double bigramWeight = .345;
+        private static double trigramWeight = .645;
         private static Dictionary<string, double> trigramDist;
         private static Dictionary<string, double> bigramDist;
         private static Dictionary<string, double> unigramDist;
@@ -147,15 +147,32 @@ namespace NLP
             return bestWord;
         }
         public static double GetWordLikelihood(Model model, Queue<string> evidence, string word)
-        {
-            Gram g = model.getGramFromChain(evidence);
-            int total = g.getCount();
-            if (total > 0)
+        {   
+            List<double> weights = getWeights();
+            List<double> likelihoods = new List<double>();
+            nWeights = new List<double>();
+            while (evidence.Count >= 0)
             {
-                int occurances = g[word].getCount();
-                return occurances / (double)total;
+                Gram g = model.getGramFromChain(evidence);
+                double temp =  0;
+                int total = g.getCount();
+                if (total > 0)
+                {
+                    int occurences = g[word].getCount();
+                    temp = occurences / (double)total;
+                }
+                likelihoods.Add(temp);
+                nWeights.Add(weights[evidence.Count]);
+                if (evidence.Count == 0)
+                    break;
+                evidence.Dequeue();
             }
-            return 0;
+            double likelihood = 0;
+            for(int i = 0; i < likelihoods.Count; i++)
+            {
+                likelihood += likelihoods[i] * nWeights[i];
+            }
+            return likelihood * 100;
         }
     }
 
