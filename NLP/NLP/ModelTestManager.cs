@@ -17,7 +17,6 @@ namespace NLP
         private static int events;
         private static int correctPredictions;
         private static int fake;
-
         private static Queue<string> evidence;
 
         public ModelTestManager(Model _model, string filePath)

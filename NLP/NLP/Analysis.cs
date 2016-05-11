@@ -150,8 +150,12 @@ namespace NLP
         {
             Gram g = model.getGramFromChain(evidence);
             int total = g.getCount();
-            int occurances = g[word].getCount();
-            return occurances / (double)total;
+            if (total > 0)
+            {
+                int occurances = g[word].getCount();
+                return occurances / (double)total;
+            }
+            return 0;
         }
     }
 

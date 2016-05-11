@@ -75,14 +75,14 @@ namespace NLP
             for (int i = 0; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
-                mtm.TestModelPrediction();
+                mtm.TestModelValuation();
             }
             author = "Twain";
             Debugger.Log(String.Format("Model Trained on {0}", author));
             for (int i = 0; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
-                mtm.TestModelPrediction();
+                mtm.TestModelValuation();
             }
         }
         public static void TestEdit()
