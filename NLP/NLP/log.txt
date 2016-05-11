@@ -1,12 +1,17 @@
-Model Trained on Austen
-..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt: 0.0162890823334884
-..\..\TextFiles\TestCorpus\Persuation.txt: 0.0312087479768943
-..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt: 0.0122010305008615
-Model Trained on Dickens
-..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt: 0.0167261024767343
-..\..\TextFiles\TestCorpus\Persuation.txt: 0.0156203076583959
-..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt: 0.0114322284126925
-Model Trained on Twain
-..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt: 0.0100964795303717
-..\..\TextFiles\TestCorpus\Persuation.txt: 0.0108261357340916
-..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt: 0.00928696688798363
+Training Corpus:
+..\..\TextFiles\TrainingCorpus\Austen\Emma.txt: 160995 words
+..\..\TextFiles\TrainingCorpus\Austen\MansfieldPark.txt: 160458 words
+..\..\TextFiles\TrainingCorpus\Austen\PrideAndPrejudice.txt: 122204 words
+..\..\TextFiles\TrainingCorpus\Austen\SenseAndSensibility.txt: 119953 words
+..\..\TextFiles\TrainingCorpus\Dickens\BleakHouse.txt: 356662 words
+..\..\TextFiles\TrainingCorpus\Dickens\GreatExpectations.txt: 186566 words
+..\..\TextFiles\TrainingCorpus\Dickens\LittleDorrit.txt: 340593 words
+..\..\TextFiles\TrainingCorpus\Dickens\OliverTwist.txt: 159013 words
+..\..\TextFiles\TrainingCorpus\Twain\HuckleberryFinn.txt: 112063 words
+..\..\TextFiles\TrainingCorpus\Twain\TheConnecticutYankee.txt: 119202 words
+..\..\TextFiles\TrainingCorpus\Twain\TheInnocentsAbroad.txt: 194059 words
+..\..\TextFiles\TrainingCorpus\Twain\TomSawyer.txt: 71304 words
+Test Corpus:
+..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt: 137156 words
+..\..\TextFiles\TestCorpus\Persuation.txt: 83657 words
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt: 70092 words

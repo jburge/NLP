@@ -30,6 +30,7 @@ namespace NLP
         public static void FinishTest(Model model, string fileName)
         {
             Console.WriteLine(String.Format("Finished Testing {0} Model on {1}", model.getAuthor(), fileName));
+            
             WriteFile(new Tuple<string, string>(model.getAuthor(), fileName));
         }
         private static void WriteFile(Tuple<string, string> t)

@@ -86,8 +86,8 @@ namespace NLP
                 UpdateTestState(word, phrase);
             }
             Debugger.Log(String.Format("{0}:\n\tevents: {1}\n\tcorrect: {2}\n\tfake: {3}", testFilePath, events, correctPredictions, fake));
-            Console.WriteLine();
             Debugger.FinishTest(model, testFilePath.Split('\\').Last());
+            Console.WriteLine();
             return new Tuple<int, int>(correctPredictions, events);
         }
         public double EvaluateWord(Queue<string> evidence, string word)
@@ -116,9 +116,9 @@ namespace NLP
 		}
 		double modelScore = scoreSum / (double)events;
 		Debugger.Log(String.Format("{0}: {1}", testFilePath, modelScore));
-        Console.WriteLine();
         Debugger.FinishTest(model, testFilePath.Split('\\').Last());
-		return modelScore;
+        Console.WriteLine();
+        return modelScore;
 	}
 
     }

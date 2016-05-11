@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text.RegularExpressions;
 
 
 //// THings to add
@@ -31,8 +32,8 @@ namespace NLP
             //TestEdit();
             //model.DisplayModel();
             //DynamicReader.InputLoop(model);
-            TestModel();
-            //CountWords();
+            //TestModel();
+            CountWords();
             Debugger.WriteLog();
         }
         static void GetInfo(Model model)
@@ -61,6 +62,7 @@ namespace NLP
         }
         static void TestModel()
         {
+            Debugger.Log(String.Format("{0}, {1}, {2}", Analysis.getWeights()[0], Analysis.getWeights()[1], Analysis.getWeights()[2]));
             author = "Austen";
             Debugger.Log(String.Format("Model Trained on {0}", author));
             string txtFolderPath = "..\\..\\TextFiles\\TestCorpus\\";
@@ -119,7 +121,7 @@ namespace NLP
         {
             string txtFolderPath;
             string[] files;
-            List<string> authors = new List<string> { "Shakespeare", "Austen", "Dickens", "Twain" };
+            List<string> authors = new List<string> {"Austen", "Dickens", "Twain" };
             Debugger.Log("Training Corpus:");
             for (int a = 0; a < authors.Count; a++)
             {
@@ -127,9 +129,7 @@ namespace NLP
                 files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
                 foreach (string file in files)
                 {
-                    Console.WriteLine(file);
-                    int phrases = RegexLogic.GetPhrasesFromFile(file).Count();
-                    Debugger.Log(String.Format("{0}: {1} words", file, phrases));
+                    CountFile(file);
                 }
             }
             txtFolderPath = "..\\..\\TextFiles\\TestCorpus\\";
@@ -137,10 +137,15 @@ namespace NLP
             Debugger.Log("Test Corpus:");
             for(int i = 0; i < files.Count(); i++)
             {
-                Console.WriteLine(files[i]);
-                string[] phrases = RegexLogic.GetPhrasesFromFile(files[i]);
-                Debugger.Log(String.Format("{0}: {1} words", files[i], phrases.Count()));
+                CountFile(files[i]);
             }
+        }
+        private static void CountFile(string file)
+        {
+            Console.WriteLine(file);
+            List<string> phrases = new List<string>(RegexLogic.GetPhrasesFromFile(file));
+            phrases.RemoveAll(item => Regex.Replace(item, "[\\.\\?\\!;~]", "") == "");
+            Debugger.Log(String.Format("{0}: {1} words", file, phrases.Count));
         }
     }
 }

@@ -11,8 +11,8 @@ namespace NLP
         private static double scale = 100;
         private static double edWeight = 10;
         private static double unigramWeight = .01;
-        private static double bigramWeight = .645;
-        private static double trigramWeight = .345;
+        private static double bigramWeight = .01;
+        private static double trigramWeight = .98;
         private static Dictionary<string, double> trigramDist;
         private static Dictionary<string, double> bigramDist;
         private static Dictionary<string, double> unigramDist;
@@ -22,7 +22,7 @@ namespace NLP
         
         private static List<string> dictionary;
         private static Model model;
-
+        public static List<double> getWeights() { return new List<double> { unigramWeight, bigramWeight, trigramWeight }; }
         private static void ComputeDistributions(Queue<string> predicate)
         {
             trigramDist = TrigramDistribution(model, dictionary, predicate);
