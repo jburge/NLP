@@ -1,13 +1,40 @@
-0.01, 0.345, 0.645
+0.05, 0.2, 0.75
 Model Trained on Austen
-..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt: 0.0162890823334884
-..\..\TextFiles\TestCorpus\Persuation.txt: 0.0312087479768943
-..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt: 0.0122010305008615
+..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
+	events: 137156
+	correct: 8806
+	fake: 13
+..\..\TextFiles\TestCorpus\Persuation.txt:
+	events: 83657
+	correct: 6838
+	fake: 4
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
+	events: 70092
+	correct: 5408
+	fake: 118
 Model Trained on Dickens
-..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt: 0.0167261024767343
-..\..\TextFiles\TestCorpus\Persuation.txt: 0.0156203076583959
-..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt: 0.0114322284126925
+..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
+	events: 137156
+	correct: 8050
+	fake: 13
+..\..\TextFiles\TestCorpus\Persuation.txt:
+	events: 83657
+	correct: 3371
+	fake: 4
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
+	events: 70092
+	correct: 4243
+	fake: 118
 Model Trained on Twain
-..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt: 0.0100964795303717
-..\..\TextFiles\TestCorpus\Persuation.txt: 0.0108261357340916
-..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt: 0.00928696688798363
+..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
+	events: 137156
+	correct: 8045
+	fake: 13
+..\..\TextFiles\TestCorpus\Persuation.txt:
+	events: 83657
+	correct: 3349
+	fake: 4
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
+	events: 70092
+	correct: 4356
+	fake: 118

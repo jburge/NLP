@@ -70,21 +70,21 @@ namespace NLP
             for(int i = 0; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
-                mtm.TestModelValuation();
+                mtm.TestModelPrediction();
             }
             author = "Dickens";
             Debugger.Log(String.Format("Model Trained on {0}", author));
             for (int i = 0; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
-                mtm.TestModelValuation();
+                mtm.TestModelPrediction();
             }
             author = "Twain";
             Debugger.Log(String.Format("Model Trained on {0}", author));
             for (int i = 0; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
-                mtm.TestModelValuation();
+                mtm.TestModelPrediction();
             }
         }
         public static void TestEdit()
