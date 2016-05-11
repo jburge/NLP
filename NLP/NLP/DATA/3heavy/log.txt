@@ -1,0 +1,21 @@
+uni .01
+bi .345
+tri .645
+
+
+
+Austen
+
+taleoftwocities 12317
+persuation 9602
+prince and the pauper 6720
+
+Dickens
+2cities 10272
+persuation 6624
+pnp 5513
+
+Twain
+2cities 9356
+persuation 6227
+pnp 5331

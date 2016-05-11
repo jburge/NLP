@@ -1,0 +1,43 @@
+private static double unigramWeight = .3;
+private static double bigramWeight = .7;
+
+
+Model Trained on Austen
+..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
+	events: 137156
+	correct: 8297
+	fake: 13
+..\..\TextFiles\TestCorpus\Persuation.txt:
+	events: 83657
+	correct: 5034
+	fake: 4
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
+	events: 70092
+	correct: 4869
+	fake: 118
+Model Trained on Dickens
+..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
+	events: 137156
+	correct: 8025
+	fake: 13
+..\..\TextFiles\TestCorpus\Persuation.txt:
+	events: 83657
+	correct: 3329
+	fake: 4
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
+	events: 70092
+	correct: 4197
+	fake: 118
+Model Trained on Twain
+..\..\TextFiles\TestCorpus\ATaleOfTwoCities.txt:
+	events: 137156
+	correct: 8025
+	fake: 13
+..\..\TextFiles\TestCorpus\Persuation.txt:
+	events: 83657
+	correct: 3327
+	fake: 4
+..\..\TextFiles\TestCorpus\ThePrinceAndThePauper.txt:
+	events: 70092
+	correct: 4263
+	fake: 118

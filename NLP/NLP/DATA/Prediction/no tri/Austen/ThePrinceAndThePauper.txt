@@ -1,0 +1,8 @@
+the: 3257
+and: 1524
+was: 59
+to: 7
+of: 7
+not: 6
+be: 6
+a: 3
