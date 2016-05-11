@@ -10,9 +10,9 @@ namespace NLP
     {
         private static double scale = 100;
         private static double edWeight = 10;
-        private static double unigramWeight = .33;
-        private static double bigramWeight = .34;
-        private static double trigramWeight = .33;
+        private static double unigramWeight = .01;
+        private static double bigramWeight = .645;
+        private static double trigramWeight = .345;
         private static Dictionary<string, double> trigramDist;
         private static Dictionary<string, double> bigramDist;
         private static Dictionary<string, double> unigramDist;
@@ -145,6 +145,13 @@ namespace NLP
                 }
             }
             return bestWord;
+        }
+        public static double GetWordLikelihood(Model model, Queue<string> evidence, string word)
+        {
+            Gram g = model.getGramFromChain(evidence);
+            int total = g.getCount();
+            int occurances = g[word].getCount();
+            return occurances / (double)total;
         }
     }
 

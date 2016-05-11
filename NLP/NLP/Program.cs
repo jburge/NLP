@@ -31,7 +31,7 @@ namespace NLP
             //TestEdit();
             //model.DisplayModel();
             //DynamicReader.InputLoop(model);
-            TestModelPrediction();
+            TestModel();
             //CountWords();
             Debugger.WriteLog();
         }
@@ -59,7 +59,7 @@ namespace NLP
             //Console.Clear();
             return m;
         }
-        static void TestModelPrediction()
+        static void TestModel()
         {
             author = "Austen";
             Debugger.Log(String.Format("Model Trained on {0}", author));
@@ -68,7 +68,7 @@ namespace NLP
             for(int i = 0; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
-                mtm.TestModelPrediction();
+                mtm.TestModelValuation();
             }
             author = "Dickens";
             Debugger.Log(String.Format("Model Trained on {0}", author));
