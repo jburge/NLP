@@ -9,10 +9,10 @@ namespace NLP
     public static class Analysis
     {
         private static double scale = 100;
-        private static double edWeight = 10;
-        private static double unigramWeight = .33;
-        private static double bigramWeight = .34;
-        private static double trigramWeight = .33;
+        private static double edWeight = 1000;
+        private static double unigramWeight = .01;
+        private static double bigramWeight = .345;
+        private static double trigramWeight = .645;
         private static Dictionary<string, double> trigramDist;
         private static Dictionary<string, double> bigramDist;
         private static Dictionary<string, double> unigramDist;
@@ -22,7 +22,7 @@ namespace NLP
         
         private static List<string> dictionary;
         private static Model model;
-
+        public static List<double> getWeights() { return new List<double> { unigramWeight, bigramWeight, trigramWeight }; }
         private static void ComputeDistributions(Queue<string> predicate)
         {
             trigramDist = TrigramDistribution(model, dictionary, predicate);
@@ -145,6 +145,34 @@ namespace NLP
                 }
             }
             return bestWord;
+        }
+        public static double GetWordLikelihood(Model model, Queue<string> evidence, string word)
+        {   
+            List<double> weights = getWeights();
+            List<double> likelihoods = new List<double>();
+            nWeights = new List<double>();
+            while (evidence.Count >= 0)
+            {
+                Gram g = model.getGramFromChain(evidence);
+                double temp =  0;
+                int total = g.getCount();
+                if (total > 0)
+                {
+                    int occurences = g[word].getCount();
+                    temp = occurences / (double)total;
+                }
+                likelihoods.Add(temp);
+                nWeights.Add(weights[evidence.Count]);
+                if (evidence.Count == 0)
+                    break;
+                evidence.Dequeue();
+            }
+            double likelihood = 0;
+            for(int i = 0; i < likelihoods.Count; i++)
+            {
+                likelihood += likelihoods[i] * nWeights[i];
+            }
+            return likelihood * 100;
         }
     }
 

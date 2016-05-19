@@ -58,6 +58,7 @@ namespace NLP
             pos = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
             SetCursorCorner();
             ClearLine();
+            Console.Write("Word Evaluation: ");
             for (int i = 0; i < promptCount && i < valuation.Count; i++)
             {
                 promptList.Add(valuation[i]);
@@ -70,9 +71,10 @@ namespace NLP
             pos = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
             SetCursor(0, 1);
             ClearLine();
+            Console.Write("Probabilities: ");
             for (int i = 0; i < promptCount && i < values.Count; i++)
             {
-                Console.Write(String.Format("{2}){0}: {1:0.00}  ", values[i].Item2, dist[values[i].Item2] * 100, (i + 1) % 10));
+                Console.Write(String.Format("{2}){0}: {1:0.0000}  ", values[i].Item2, dist[values[i].Item2] * 100, (i + 1) % 10));
             }
             SetCursor(pos.Item1, pos.Item2);
         }
@@ -81,6 +83,7 @@ namespace NLP
             pos = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
             SetCursor(0, 2);
             ClearLine();
+            Console.Write("Edit Distance: ");
             for (int i = 0; i < promptCount && i < values.Count; i++)
             {
                 Console.Write(String.Format("{2}){0}: {1:0.00}  ", values[i].Item2, EditDistance.ComputeEditDistanceDP(values[i].Item2, word), (i + 1) % 10));

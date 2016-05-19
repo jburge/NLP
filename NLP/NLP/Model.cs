@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Text.RegularExpressions;
 
-//remove [] and tabs
-//see end of file as a terminator
-
-
+//make it so captial words not at beginning of sentence stay cappitalised
 namespace NLP
 {
     public class Model

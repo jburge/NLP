@@ -12,11 +12,15 @@ namespace NLP
         private static List<string> logList;
         private static string output = "..\\..\\log.txt";
         private static string resultDir = "..\\..\\TestResults\\";
+        private static string wordoutput = "..\\..\\wordcounts.txt";
+        private static List<string> MyList;
         private static Dictionary<Tuple<string, string>, MatchTracker> TestData;
+        private static Dictionary<string, int> wordCounts = new Dictionary<string,int>();
         public static void InitializeLog()
         {
             logList = new List<string>();
-            TestData = new Dictionary<Tuple<string, string>, MatchTracker>(); ;
+            TestData = new Dictionary<Tuple<string, string>, MatchTracker>();
+            MyList = new List<string> { "the", "and", "of", "to", "be", "a", "been", "was", "he", "had", "not", "own", "were", "at", "have", "much", "same", "dear", "you", "more", "shop", "than", "time", "very", "little", "are", "lady", "that", "as", "sure", "i", "down", "house", "it", "voice", "for", "marquis", "in", "other", "tree", "well", "say", "deal", "from", "is", "minutes", "world", "door", "hundred", "man", "prisoner", "room", "saw", "all", "five", "hand", "her", "night", "old", "one", "people", "seven", "should", "subject", "who", "with", "court", "head", "if", "know", "ship", "wine" };
         }
         public static void Log(string item)
         {
@@ -30,6 +34,7 @@ namespace NLP
         public static void FinishTest(Model model, string fileName)
         {
             Console.WriteLine(String.Format("Finished Testing {0} Model on {1}", model.getAuthor(), fileName));
+            
             WriteFile(new Tuple<string, string>(model.getAuthor(), fileName));
         }
         private static void WriteFile(Tuple<string, string> t)
@@ -58,7 +63,26 @@ namespace NLP
         {
             System.IO.File.WriteAllLines(output, logList.ToArray());
         }
-
+        public static void Count(string w)
+        {
+            if (!wordCounts.ContainsKey(w))
+            {
+                wordCounts.Add(w, 1);
+            }
+            else
+                wordCounts[w] += 1;
+        }
+        public static void PrintCount()
+        {
+            List<KeyValuePair<string, int>> temp = wordCounts.ToList();
+            List<string> result = new List<string>();
+            foreach (KeyValuePair<string, int> kvp in temp)
+            {
+                if(MyList.Contains(kvp.Key))
+                result.Add(kvp.Key +": "+ kvp.Value);
+            }
+            System.IO.File.WriteAllLines(wordoutput, result.ToArray());
+        }
     }
     public class MatchTracker
     {
