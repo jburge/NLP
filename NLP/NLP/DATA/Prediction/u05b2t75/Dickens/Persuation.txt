@@ -1,0 +1,7 @@
+the: 3324
+was: 30
+and: 9
+had: 3
+been: 2
+a: 2
+to: 1

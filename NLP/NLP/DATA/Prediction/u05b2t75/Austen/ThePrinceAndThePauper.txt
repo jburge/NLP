@@ -1,0 +1,13 @@
+the: 3237
+and: 1620
+was: 251
+of: 98
+a: 60
+to: 48
+not: 39
+be: 37
+been: 12
+were: 2
+he: 2
+world: 1
+very: 1
