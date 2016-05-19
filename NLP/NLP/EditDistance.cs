@@ -14,7 +14,7 @@ namespace NLP
     /// </summary>
     public static class EditDistance
     {
-        private static int cutoff = 5;                      // used to prevent wasteful computation
+        private static int cutoff = 3;                      // used to prevent wasteful computation
         private static int insCost = 1;
         private static int remCost = 1;
         private static int subCost = 2;

@@ -28,17 +28,12 @@ namespace NLP
             Debugger.InitializeLog();
             //EditAttempt();
             SetUpWindow();
-            Model model = InitializeModel();
+            Model model = ComprehensiveModel();
             Console.Clear();
             //TestEdit();
             //model.DisplayModel();
-<<<<<<< HEAD
             DynamicReader.InputLoop(model);
             //TestModel();
-=======
-            //DynamicReader.InputLoop(model);
-            TestModel();
->>>>>>> 80b203456216172a040095455e6a11d7f2f72b85
             //CountWords();
             Debugger.WriteLog();
         }
@@ -64,6 +59,21 @@ namespace NLP
                 m.TrainModel(fileName);
             }
             //Console.Clear();
+            return m;
+        }
+        static Model ComprehensiveModel()
+        {
+            Model m = new Model(depth);
+            string directoryPath = "..\\..\\TextFiles\\TrainingCorpus\\";
+            string[] directories = Directory.GetDirectories(directoryPath);
+            for(int i = 0; i < directories.Count(); i++)
+            {
+                string[] files = Directory.GetFiles(directories[i], "*.txt", SearchOption.TopDirectoryOnly);
+                foreach (string fileName in files)
+                {
+                    m.TrainModel(fileName);
+                }
+            }
             return m;
         }
         static void TestModel()
@@ -127,7 +137,6 @@ namespace NLP
         {
             string txtFolderPath;
             string[] files;
-<<<<<<< HEAD
             //List<string> authors = new List<string> {"Austen", "Dickens", "Twain" };
             //Debugger.Log("Training Corpus:");
             //for (int a = 0; a < authors.Count; a++)
@@ -146,36 +155,6 @@ namespace NLP
             //{
                 CountFile(txtFolderPath+"ATaleOfTwoCities.txt");
             //}
-        }
-        private static void CountFile(string file)
-        {
-            Console.WriteLine(file);
-            List<string> phrases = new List<string>(RegexLogic.GetPhrasesFromFile(file));
-            phrases.RemoveAll(item => Regex.Replace(item, "[\\.\\?\\!;~]", "") == "");
-            foreach(string p in phrases){
-                Debugger.Count(p.ToLower());
-=======
-            List<string> authors = new List<string> {"Austen", "Dickens", "Twain" };
-            Debugger.Log("Training Corpus:");
-            for (int a = 0; a < authors.Count; a++)
-            {
-                txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\" + authors[a] + "\\";
-                files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
-                foreach (string file in files)
-                {
-                    CountFile(file);
-                }
-            }
-            txtFolderPath = "..\\..\\TextFiles\\TestCorpus\\";
-            files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
-            Debugger.Log("Test Corpus:");
-            for(int i = 0; i < files.Count(); i++)
-            {
-                CountFile(files[i]);
->>>>>>> 80b203456216172a040095455e6a11d7f2f72b85
-            }
-            Debugger.PrintCount();
-            Debugger.Log(String.Format("{0}: {1} words", file, phrases.Count));
         }
         private static void CountFile(string file)
         {
