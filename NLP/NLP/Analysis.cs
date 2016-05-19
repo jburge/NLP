@@ -9,10 +9,17 @@ namespace NLP
     public static class Analysis
     {
         private static double scale = 100;
+<<<<<<< HEAD
         private static double edWeight = 1000;
         private static double unigramWeight = .01;
         private static double bigramWeight = .345;
         private static double trigramWeight = .645;
+=======
+        private static double edWeight = 10;
+        private static double unigramWeight = .05;
+        private static double bigramWeight = .2;
+        private static double trigramWeight = .75;
+>>>>>>> 80b203456216172a040095455e6a11d7f2f72b85
         private static Dictionary<string, double> trigramDist;
         private static Dictionary<string, double> bigramDist;
         private static Dictionary<string, double> unigramDist;

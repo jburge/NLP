@@ -1,0 +1,25 @@
+<<<<<<< HEAD
+=======
+the: 2455
+and: 1509
+be: 576
+to: 561
+of: 428
+been: 348
+was: 322
+not: 270
+a: 108
+had: 66
+very: 40
+deal: 34
+were: 29
+world: 21
+as: 18
+own: 16
+sure: 11
+subject: 9
+house: 7
+same: 4
+i: 4
+he: 2
+>>>>>>> 80b203456216172a040095455e6a11d7f2f72b85
