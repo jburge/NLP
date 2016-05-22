@@ -78,7 +78,7 @@ namespace NLP
             }
             SetCursor(pos.Item1, pos.Item2);
         }
-        public static void PrintEditDistance(List<Tuple<double, string>> values, List<Tuple<double, string>> edList, string word)
+        public static void PrintEditDistance(List<Tuple<double, string>> values, Dictionary<string, double> edList)
         {
             pos = new Tuple<int, int>(Console.CursorLeft, Console.CursorTop);
             SetCursor(0, 2);
@@ -86,7 +86,7 @@ namespace NLP
             Console.Write("Edit Distance: ");
             for (int i = 0; i < promptCount && i < values.Count; i++)
             {
-                Console.Write(String.Format("{2}){0}: {1:0.00}  ", values[i].Item2, EditDistance.ComputeEditDistanceDP(values[i].Item2, word), (i + 1) % 10));
+                Console.Write(String.Format("{2}){0}: {1:0.00}  ", values[i].Item2, edList[values[i].Item2], (i + 1) % 10));
             }
             SetCursor(pos.Item1, pos.Item2);
         }

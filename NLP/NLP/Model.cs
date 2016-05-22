@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 //make it so captial words not at beginning of sentence stay cappitalised
 namespace NLP
 {
-    public class Model
+    public partial class Model
     {
         int modelDepth;
         int eventCount;
