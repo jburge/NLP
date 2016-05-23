@@ -14,7 +14,7 @@ namespace NLP
         public static string RegexTerminators = "[\\.\\!\\?;]";
         public static List<string> exceptionList = new List<string> { "mr.", "mrs.", "dr." };
 
-        private List<double> weights;
+        private List<double> weights = new List<double>{.01, .345, .645};
         private int modelDepth;
         /// EDIT DISTANCE COST FUNCTIONS ///
         private int editDistanceCutoff = 3;

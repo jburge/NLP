@@ -25,17 +25,17 @@ namespace NLP
         private static int depth = 3;
         static void Main(string[] args)
         {
-            Debugger.InitializeLog();
+            //Debugger.InitializeLog();
             //EditAttempt();
             SetUpWindow();
             Model model = ComprehensiveModel();
             Console.Clear();
-            TestFunctions.TestEdit();
+            //TestFunctions.TestEdit();
             //model.DisplayModel();
             DynamicReader.InputLoop(model);
             //TestModel();
             //CountWords();
-            Debugger.WriteLog();
+            //Debugger.WriteLog();
         }
         static void SetUpWindow()
         {
@@ -58,7 +58,7 @@ namespace NLP
         }
         static Model ComprehensiveModel()
         {
-            Model m = new Model(depth);
+            Model m = new Model();
             string directoryPath = "..\\..\\TextFiles\\TrainingCorpus\\";
             string[] directories = Directory.GetDirectories(directoryPath);
             for(int i = 0; i < directories.Count(); i++)
@@ -73,62 +73,30 @@ namespace NLP
         }
         static void TestModel()
         {
-            Debugger.Log(String.Format("{0}, {1}, {2}", Analysis.getWeights()[0], Analysis.getWeights()[1], Analysis.getWeights()[2]));
+           // Debugger.Log(String.Format("{0}, {1}, {2}", Analysis.getWeights()[0], Analysis.getWeights()[1], Analysis.getWeights()[2]));
             author = "Austen";
-            Debugger.Log(String.Format("Model Trained on {0}", author));
+            //Debugger.Log(String.Format("Model Trained on {0}", author));
             string txtFolderPath = "..\\..\\TextFiles\\TestCorpus\\";
             string[] files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
             for(int i = 0; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
-                mtm.TestModelValuation();
+                //mtm.TestModelValuation();
             }
             author = "Dickens";
-            Debugger.Log(String.Format("Model Trained on {0}", author));
+            //Debugger.Log(String.Format("Model Trained on {0}", author));
             for (int i = 0; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
-                mtm.TestModelValuation();
+                //mtm.TestModelValuation();
             }
             author = "Twain";
-            Debugger.Log(String.Format("Model Trained on {0}", author));
+            //Debugger.Log(String.Format("Model Trained on {0}", author));
             for (int i = 0; i < files.Count(); i++)
             {
                 ModelTestManager mtm = new ModelTestManager(InitializeModel(), files[i]);
-                mtm.TestModelValuation();
+                //mtm.TestModelValuation();
             }
-        }
-
-
-        public static void CountWords()
-        {
-            string txtFolderPath;
-            string[] files;
-            //List<string> authors = new List<string> {"Austen", "Dickens", "Twain" };
-            //Debugger.Log("Training Corpus:");
-            //for (int a = 0; a < authors.Count; a++)
-            //{
-            //    txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\" + authors[a] + "\\";
-            //    files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
-            //    foreach (string file in files)
-            //    {
-            //        CountFile(file);
-            //    }
-            //}
-            txtFolderPath = "..\\..\\TextFiles\\TestCorpus\\";
-            //files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
-            //Debugger.Log("Test Corpus:");
-            //for(int i = 0; i < files.Count(); i++)
-            //{
-                CountFile(txtFolderPath+"ATaleOfTwoCities.txt");
-            //}
-        }
-        private static void CountFile(string file)
-        {
-            Console.WriteLine(file);
-            List<string> phrases = new List<string>(RegexLogic.GetPhrasesFromFile(file));
-            phrases.RemoveAll(item => Regex.Replace(item, "[\\.\\?\\!;~]", "") == "");
-            Debugger.Log(String.Format("{0}: {1} words", file, phrases.Count));
         }
     }
 }

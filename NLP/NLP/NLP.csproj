@@ -42,15 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis.cs" />
-    <Compile Include="Analysis2.cs" />
     <Compile Include="Debugger.cs" />
     <Compile Include="DynamicReader.cs" />
     <Compile Include="EditDistance.cs" />
-    <Compile Include="EditDistance2.cs" />
-    <Compile Include="Gram2.cs" />
+    <Compile Include="Gram.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Model.cs" />
-    <Compile Include="Gram.cs" />
     <Compile Include="ModelParameters.cs" />
     <Compile Include="ModelTestManager.cs" />
     <Compile Include="Program.cs" />

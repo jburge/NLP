@@ -11,16 +11,16 @@ namespace NLP
 {
     public static class TestFunctions
     {
-        public static void TestEdit()
+        public static void TestEdit(Model model)
         {
             string w1 = Console.ReadLine();
             string w2 = Console.ReadLine();
 
-            double d = EditDistance.ComputeEditDistanceDP(w1, w2);
+            double d = EditDistance.ComputeEditDistance(model, w1, w2);
             Console.WriteLine(w1 + " , " + w2 + " : " + d);
         }
-    }
-    public static void EditAttempt()
+
+        public static void EditAttempt()
         {
             string author = "Twain";
             string txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\" + author + "\\";
@@ -42,4 +42,35 @@ namespace NLP
                 System.IO.File.WriteAllText(file, content);
             }
         }
+        public static void CountWords()
+        {
+            string txtFolderPath;
+            string[] files;
+            //List<string> authors = new List<string> {"Austen", "Dickens", "Twain" };
+            //Debugger.Log("Training Corpus:");
+            //for (int a = 0; a < authors.Count; a++)
+            //{
+            //    txtFolderPath = "..\\..\\TextFiles\\TrainingCorpus\\" + authors[a] + "\\";
+            //    files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
+            //    foreach (string file in files)
+            //    {
+            //        CountFile(file);
+            //    }
+            //}
+            txtFolderPath = "..\\..\\TextFiles\\TestCorpus\\";
+            //files = Directory.GetFiles(txtFolderPath, "*.txt", SearchOption.TopDirectoryOnly);
+            //Debugger.Log("Test Corpus:");
+            //for(int i = 0; i < files.Count(); i++)
+            //{
+            CountFile(txtFolderPath + "ATaleOfTwoCities.txt");
+            //}
+        }
+        private static void CountFile(string file)
+        {
+            Console.WriteLine(file);
+            List<string> phrases = new List<string>(RegexLogic.GetPhrasesFromFile(file));
+            phrases.RemoveAll(item => Regex.Replace(item, "[\\.\\?\\!;~]", "") == "");
+            Debugger.Log(String.Format("{0}: {1} words", file, phrases.Count));
+        }
+    }
 }

@@ -8,119 +8,82 @@ namespace NLP
 {
     public class Gram
     {
-        private string gram;
-        public Dictionary<string, Gram> children = new Dictionary<string, Gram>();
+        private string gramWord;
+        private Dictionary<string, Gram> children;
         private int count;
 
         public Gram(string word)
         {
-            gram = word;
+            gramWord = word;
+            children = new Dictionary<string,Gram>();
             count = 0;
         }
 
         public void Add(Queue<string> chain)
         {
             string nextWord = chain.Dequeue();
-            if (!children.ContainsKey(nextWord))
+            if (!Contains(nextWord))
             {
                 children.Add(nextWord, new Gram(nextWord));
             }
-            if (chain.Count > 0)
+            
+            if(chain.Count() > 0)
             {
                 children[nextWord].Add(chain);
             }
             children[nextWord].Increment();
         }
-        /// <summary>
-        /// Gets the frequency of word w appearing as the next word given this state
-        /// </summary>
-        /// <param name="word"></param>
-        /// <returns></returns>
-        public int NextWordCount(string word)
+
+        public string getMostFrequentChild()
         {
-            if (children.ContainsKey(word))
-            {
-                return children[word].getCount();
-            }
-            else
-            {
-                return 0;
-            }
-        }
-        public void Increment() { count++; }
-        /// <summary>
-        /// Returns all children (observed words from current state) ordered by count
-        /// </summary>
-        /// <returns></returns>
-        public List<Gram> getChildrenGrams()
-        {
-            return new List<Gram>(children.Values.ToList().OrderBy(o => o.getCount()).ToList());
-        }
-        /// <summary>
-        /// Returns all strings from children grams
-        /// </summary>
-        /// <returns></returns>
-        public List<string> getChildren()
-        {
-            List<string> words = new List<string>();
-            foreach (Gram g in children.Values)
-            {
-                words.Add(g.getWord());
-            }
-            words.Sort();
-            return words;
-        }
-        public Gram getGram(Queue<string> chain)
-        {
-            if (chain.Count > 0)
-            {
-                string first = chain.Dequeue();
-                return this[first].getGram(chain);
-            }
-            else
-            {
-                return this;
-            }
+            string mostFrequentChild = "";
+            if(children.Count() != 0)
+                mostFrequentChild = children.OrderByDescending(x => x.Value.getCount()).First().Key;
+            return mostFrequentChild;
         }
 
-        //////////////////////////////////
-        public int getCount() { return count; }
-        public string getWord() { return gram; }
-        public bool ContainsChild(string child)
+        public Gram getGram(Queue<string> chain)
         {
-            return children.ContainsKey(child);
+            if (chain.Count() == 0)
+                return this;
+            else
+                return this[chain.Dequeue()].getGram(chain);
         }
+
+        public int NextWordCount(string word)
+        {
+            if (Contains(word))
+                return children[word].getCount();
+            else
+                return 0;
+        }
+
+        public List<string> getChildren() { return new List<string>(children.Keys.ToList().OrderBy(o => children[o].getCount()).ToList());
+ }
+
+        //public List<Gram2> getChildren() { return new List<Gram2>(children.Values.ToList().OrderBy(x => x.getCount()).ToList()); }
+
+        public void Increment() { count++; }
+
+        /// GENERAL UTILITY ///
+        public int getCount() { return count; }
+        public string getWord() { return gramWord; }
         public Gram this[string key]
         {
             get
             {
                 Gram child;
-                if (!this.children.TryGetValue(key, out child))
+                if(!this.children.TryGetValue(key, out child))
                 {
-                   children[key] = new Gram(key);
-                   child = children[key];
+                    children[key] = new Gram(key);
+                    child = children[key];
                 }
                 return child;
             }
         }
-        public string getMostLikelyNextWord()
-        {
-            string word = "";
-            int count = 0;
-            foreach (Gram g in children.Values)
-            {
-                if(g.getCount() > count)
-                {
-                    word = g.getWord();
-                    count = g.getCount();
-                }
-            }
-            if (word == "")
-            {
-                Console.WriteLine("ERROR, EMPTY STRING MOST LIKELY NEXT");
-                Console.WriteLine(gram);
-            }
-            return word;
-        }
+        public bool Contains(string child) { return children.ContainsKey(child); }
+
+
+
     }
 }

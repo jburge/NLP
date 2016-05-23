@@ -11,26 +11,32 @@ namespace NLP
 {
     public partial class Model
     {
-        Gram2 model;
+        Gram model;
         int eventCount;
 
         string author = "";
+        public Model(){
+            modelDepth = weights.Count();
+            eventCount = 0;
+            model = new Gram("");
+        }
+
         public Model(List<double> _weights)
         {
-            model = new Gram2("");
+            model = new Gram("");
             weights = _weights;
             modelDepth = weights.Count();
             eventCount = 0;
         }
         public Model(int depth)
         {
-            model = new Gram2("");
+            model = new Gram("");
             modelDepth = depth;
             eventCount = 0;
         }
         public Model(int depth, string _author)
         {
-            model = new Gram2("");
+            model = new Gram("");
             modelDepth = depth;
             eventCount = 0;
             author = _author;
@@ -53,7 +59,7 @@ namespace NLP
         {
             return eventCount;
         }
-        public Gram2 getGramFromChain(Queue<string> chain)
+        public Gram getGramFromChain(Queue<string> chain)
         {
             return model.getGram(chain);
         }
@@ -69,14 +75,14 @@ namespace NLP
         //    }
         //}
         public string getAuthor() { return author; }
-        //public Gram2 this[string key]
-        //{
-        //    get
-        //    {
-        //        Gram2 child = model[key];
-        //        return child;
-        //    }
-        //}
+        public Gram this[string key]
+        {
+            get
+            {
+                Gram child = model[key];
+                return child;
+            }
+        }
         /// <summary>
         /// Takes event chain and recursively increments states that occur
         /// </summary>
@@ -154,28 +160,28 @@ namespace NLP
             Console.WriteLine("Trained on file " + fileName);
         }
         /// DynamicStuff
-        //public Queue<string> DynamicRead(Queue<string> predicate, string currentWord)
-        //{
-        //    List<Tuple<double, string>> valuation = Analysis2.DetermineLikelyReplacements(new Queue<string>(predicate.ToArray()), currentWord, this);
-        //    // update model
+        public Queue<string> DynamicRead(Queue<string> predicate, string currentWord)
+        {
+            List<Tuple<double, string>> valuation = Analysis.DetermineLikelyReplacements(this, new Queue<string>(predicate.ToArray()), currentWord);
+            // update model
 
-        //    // print through writer
+            // print through writer
 
-        //    Writer.WriteMetaData(predicate, currentWord);
-        //    return predicate;
-        //}
-        //public Queue<string> DynamicObserve(Queue<string> chain, string nextWord)
-        //{
-        //    eventCount++;
-        //    chain.Enqueue(nextWord);
-        //    if (chain.Count > modelDepth)
-        //    {
-        //        chain.Dequeue();
-        //    }
-        //    Queue<string> temp = new Queue<string>(chain.ToArray());
-        //    ChainPush(temp);
-        //    return chain;
-        //}
+            Writer.WriteMetaData(predicate, currentWord);
+            return predicate;
+        }
+        public Queue<string> DynamicObserve(Queue<string> chain, string nextWord)
+        {
+            eventCount++;
+            chain.Enqueue(nextWord);
+            if (chain.Count > modelDepth)
+            {
+                chain.Dequeue();
+            }
+            Queue<string> temp = new Queue<string>(chain.ToArray());
+            ChainPush(temp);
+            return chain;
+        }
         /// EDIT DISTANCE FUNC ///
         public int getInsertCost() { return insCost; }
         public int getRemoveCost() { return remCost; }
