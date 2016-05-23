@@ -30,6 +30,23 @@ namespace NLP
             Writer.PrintEditDistance(candidates, editDistances);
             return candidates;
         }
+        public static string PredictWord(Queue<string> predicate, Model _model)
+        {
+            model = _model;
+            Dictionary<string, double> distribution = ComputeDistribution(predicate);
+            double bestScore = 0;
+            string bestWord = "";
+            foreach (string s in model.GetDictionary())
+            {
+                double value = getInterpolatedValue(s);
+                if (value > bestScore)
+                {
+                    bestScore = value;
+                    bestWord = s;
+                }
+            }
+            return bestWord;
+        }
         private static Dictionary<string, double> ComputeDistribution(Queue<string> predicate)
         {
             distributions = new List<Dictionary<string, double>>();
@@ -56,7 +73,7 @@ namespace NLP
             Dictionary<string, double> editDistances = new Dictionary<string, double>();
             foreach(string w in model.GetDictionary())
             {
-                editDistances.Add(w, EditDistance.ComputeEditDistanceDP(word, w));
+                editDistances.Add(w, EditDistance2.ComputeEditDistance(model, word, w));
             }
             return editDistances;
         }

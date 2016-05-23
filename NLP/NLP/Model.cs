@@ -11,24 +11,26 @@ namespace NLP
 {
     public partial class Model
     {
-        int modelDepth;
+        Gram2 model;
         int eventCount;
-        Gram model;
+
         string author = "";
-        public static string terminators = ".!?";
-        public static string wordBreak = " -_";
-        public static string RegexCharRemoval = "[^a-zA-Z0-9\\.\\?\\!;\' ]";
-        public static string RegexTerminators = "[" + terminators + "]";
-        public static List<string> exceptionList = new List<string> { "mr.", "mrs.", "dr." };
+        public Model(List<double> _weights)
+        {
+            model = new Gram2("");
+            weights = _weights;
+            modelDepth = weights.Count();
+            eventCount = 0;
+        }
         public Model(int depth)
         {
-            model = new Gram("");
+            model = new Gram2("");
             modelDepth = depth;
             eventCount = 0;
         }
         public Model(int depth, string _author)
         {
-            model = new Gram("");
+            model = new Gram2("");
             modelDepth = depth;
             eventCount = 0;
             author = _author;
@@ -41,7 +43,7 @@ namespace NLP
         }
         public bool HasKey(string s) //checks if a word is in dictionary
         {
-            return model.ContainsChild(s);
+            return model.Contains(s);
         }
         public List<string> GetDictionary()
         {
@@ -51,43 +53,37 @@ namespace NLP
         {
             return eventCount;
         }
-        public Gram getGramFromChain(Queue<string> chain)
+        public Gram2 getGramFromChain(Queue<string> chain)
         {
             return model.getGram(chain);
         }
-        public int GetWordCount(string word)
-        {
-            if (model.ContainsChild(word))
-            {
-                return model[word].getCount();
-            }
-            else
-            {
-                return 0;
-            }
-        }
+        //public int GetWordCount(string word)
+        //{
+        //    if (model.Contains(word))
+        //    {
+        //        return model[word].getCount();
+        //    }
+        //    else
+        //    {
+        //        return 0;
+        //    }
+        //}
         public string getAuthor() { return author; }
-        public Gram this[string key]
-        {
-            get
-            {
-                Gram child = model[key];
-                return child;
-            }
-        }
+        //public Gram2 this[string key]
+        //{
+        //    get
+        //    {
+        //        Gram2 child = model[key];
+        //        return child;
+        //    }
+        //}
         /// <summary>
         /// Takes event chain and recursively increments states that occur
         /// </summary>
         /// <param name="chain"></param>
         public void AddEvent(Queue<string> chain)
         {
-            string firstWord = chain.Dequeue();
-            Gram temp = model[firstWord];
-            if (chain.Count > 0)
-            {
-                model[firstWord].Add(chain);
-            }
-            model[firstWord].Increment();
+            model.Add(chain);
         }
         /// <summary>
         /// Pushes the Queue through into the model
@@ -125,8 +121,6 @@ namespace NLP
             return chain;
         }
 
-        // want to keep 0-9, a-z, A-Z, '.', '?', '!', ';', '''
-        // [^a-zA-Z0-9\.\?\!;' ]
         /// <summary>
         /// Trains model off static corpus
         /// </summary>
@@ -159,84 +153,82 @@ namespace NLP
             }
             Console.WriteLine("Trained on file " + fileName);
         }
+        /// DynamicStuff
+        //public Queue<string> DynamicRead(Queue<string> predicate, string currentWord)
+        //{
+        //    List<Tuple<double, string>> valuation = Analysis2.DetermineLikelyReplacements(new Queue<string>(predicate.ToArray()), currentWord, this);
+        //    // update model
 
-        /// <summary>
-        /// Given a predicate and currentWord, determine what words in the dictionary are likely to be intended by input
-        /// </summary>
-        /// <param name="predicate">previous k words</param>
-        /// <param name="currentWord">user input word</param>
-        /// <returns>List of tuples containing value weight and word string</returns>
-        private List<Tuple<double, string>> EvaluateState(Queue<string> predicate, string currentWord)
-        {
-            return Analysis.EvaluateLikelihood(new Queue<string>(predicate.ToArray()), currentWord, this);
-        }
+        //    // print through writer
 
-        public Queue<string> DynamicRead(Queue<string> predicate, string currentWord)
-        {
-            List<Tuple<double, string>> valuation = EvaluateState(predicate, currentWord);
-            // update model
+        //    Writer.WriteMetaData(predicate, currentWord);
+        //    return predicate;
+        //}
+        //public Queue<string> DynamicObserve(Queue<string> chain, string nextWord)
+        //{
+        //    eventCount++;
+        //    chain.Enqueue(nextWord);
+        //    if (chain.Count > modelDepth)
+        //    {
+        //        chain.Dequeue();
+        //    }
+        //    Queue<string> temp = new Queue<string>(chain.ToArray());
+        //    ChainPush(temp);
+        //    return chain;
+        //}
+        /// EDIT DISTANCE FUNC ///
+        public int getInsertCost() { return insCost; }
+        public int getRemoveCost() { return remCost; }
+        public int getSubstitutionCost() { return subCost; }
+        public int getCutoff() { return editDistanceCutoff; }
 
-            // print through writer
-
-            Writer.WriteMetaData(predicate, currentWord);
-            return predicate;
-        }
-        public Queue<string> DynamicObserve(Queue<string> chain, string nextWord)
-        {
-            eventCount++;
-            chain.Enqueue(nextWord);
-            if (chain.Count > modelDepth)
-            {
-                chain.Dequeue();
-            }
-            Queue<string> temp = new Queue<string>(chain.ToArray());
-            ChainPush(temp);
-            return chain;
-        }
+        /// ANALYSIS FUNC ///
+        public List<double> getWeights() { return weights; }
+        
         /////////////////////////////////////////////
         /// Functions to Print Model distribution ///
         /////////////////////////////////////////////
-        public void DisplayModel()
-        {
-            DisplayUnigrams();
-            //DisplayBigrams();
-            //DisplayTrigrams();
-        }
-        private void DisplayUnigrams()
-        {
-            List<Gram> list = model.getChildrenGrams();
-            for (int i = 0; i < list.Count; i++)
-            {
-                Console.WriteLine(list[i].getWord() + ": " + list[i].getCount());
-            }
-        }
-        private void DisplayBigrams()
-        {
-            List<Gram> list = model.getChildrenGrams();
-            for (int i = 0; i < list.Count; i++)
-            {
-                List<Gram> bigramList = list[i].getChildrenGrams();
-                for (int j = 0; j < bigramList.Count; j++)
-                {
-                    Console.WriteLine("(" + list[i].getWord() + ", " + bigramList[j].getWord() + "): " + bigramList[j].getCount());
-                }
-            }
-        }
-        private void DisplayTrigrams()
-        {
-            List<Gram> list = model.getChildrenGrams();
-            for (int i = 0; i < list.Count; i++)
-            {
-                List<Gram> bigramList = list[i].getChildrenGrams();
-                for (int j = 0; j < bigramList.Count; j++)
-                {
-                    List<Gram> trigramList = bigramList[j].getChildrenGrams();
-                    for (int k = 0; k < trigramList.Count; k++)
-                    {
-                        Console.WriteLine("(" + list[i].getWord() + ", " + bigramList[j].getWord() + ", " + trigramList[k].getWord() + "): " + trigramList[k].getCount());
-                    }
-                }
-            }
-        }
+        //public void DisplayModel()
+        //{
+        //    //DisplayUnigrams();
+        //    //DisplayBigrams();
+        //    //DisplayTrigrams();
+        //}
+        //private void DisplayUnigrams()
+        //{
+        //    List<Gram> list = model.getChildrenGrams();
+        //    for (int i = 0; i < list.Count; i++)
+        //    {
+        //        Console.WriteLine(list[i].getWord() + ": " + list[i].getCount());
+        //    }
+        //}
+        //private void DisplayBigrams()
+        //{
+        //    List<Gram> list = model.getChildrenGrams();
+        //    for (int i = 0; i < list.Count; i++)
+        //    {
+        //        List<Gram> bigramList = list[i].getChildrenGrams();
+        //        for (int j = 0; j < bigramList.Count; j++)
+        //        {
+        //            Console.WriteLine("(" + list[i].getWord() + ", " + bigramList[j].getWord() + "): " + bigramList[j].getCount());
+        //        }
+        //    }
+        //}
+        //private void DisplayTrigrams()
+        //{
+        //    List<Gram> list = model.getChildrenGrams();
+        //    for (int i = 0; i < list.Count; i++)
+        //    {
+        //        List<Gram> bigramList = list[i].getChildrenGrams();
+        //        for (int j = 0; j < bigramList.Count; j++)
+        //        {
+        //            List<Gram> trigramList = bigramList[j].getChildrenGrams();
+        //            for (int k = 0; k < trigramList.Count; k++)
+        //            {
+        //                Console.WriteLine("(" + list[i].getWord() + ", " + bigramList[j].getWord() + ", " + trigramList[k].getWord() + "): " + trigramList[k].getCount());
+        //            }
+        //        }
+        //    }
+        //}
     }
 }
