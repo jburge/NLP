@@ -39,6 +39,7 @@ namespace NLP
             foreach (string s in model.GetDictionary())
             {
                 double value = getInterpolatedValue(s);
+
                 if (value > bestScore)
                 {
                     bestScore = value;
